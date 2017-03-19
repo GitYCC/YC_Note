@@ -1,0 +1,132 @@
+body {
+    margin: 0;
+    padding: 0 ;
+    font-family: "SF Pro TC", "HanHei TC", "SF Pro Text",
+     "Myriad Set Pro", "DF Pro Icons", "PingFang TC", "Helvetica Heuw",
+     Helvetica, Arial, sans-serif;
+}
+#header {
+    position: fixed;
+    background: rgba(0, 0, 0, 0.9);
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    width: 100%;
+    z-index: 1;
+    padding:0;
+    overflow: hidden;
+}
+#header .icon {
+    color: rgba(255, 255, 255, 0.4);
+    margin: 0;
+    float: left;
+    top:0;
+    bottom: 0;
+    height: 30px;
+    
+    padding: 5px 10px 5px 10px;
+    text-align: center;
+
+
+}
+#header .menu {
+    float:right;
+    width:36px;
+    display: none;
+    z-index: 2;
+}
+#header .header_item {
+    color: rgba(255, 255, 255, 0.6);
+    float: left;
+    width: 110px;
+    height: 40px;
+    padding-top: 11px;
+    padding-bottom: 0;
+    text-align: center;
+    font-size: 14px;
+
+}
+#header .header_item:hover{
+    color: rgba(255, 255, 255, 1.0);
+}
+#header .header_item:visited{
+    outline: 0;
+    text-decoration: none;
+}
+#header .header_item:link{
+    outline: 0;
+    text-decoration: none;
+}
+
+
+#front_board {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    overflow:hidden;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+}
+#front_board img {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    top:   0;
+    left:  0;
+    right: 0;
+}
+#front_board h1 {
+    width: 40%;
+    border-style: solid;
+    border-width: 7px;
+    position: relative;
+    margin-left:  auto;
+    margin-right: auto;
+
+}
+
+@media screen and (max-width: 600px)
+{
+
+#header {
+    height: auto;
+}
+#header .icon {
+    position: static;
+    border-right: none;
+    clear: both;
+}
+#header .header_item {
+    display: none;
+    position: static;
+    float: right;
+    clear: both;
+    border-right: none;
+    font-size: 20px;
+    width:100%;
+}
+#header .menu {
+    display: inline;
+    padding-right: 5px;
+}
+
+}
+
+@media (min-width: 768px) and (max-width: 979px) { 
+
+}
+
+@media  (max-width: 979px) { 
+
+}
+
+
+
+
+
+
