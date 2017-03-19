@@ -33,9 +33,8 @@ body {
 #header #header_box {
     margin-left: auto;
     margin-right: auto;
-    padding-right: auto;
-    padding-left: auto;
-    width:440px;
+
+    width:50%;
 }
 #header .menu {
     float:right;
@@ -46,12 +45,13 @@ body {
 #header .header_item {
     color: rgba(255, 255, 255, 0.6);
     float: left;
-    width: 110px;
+    width: 25%;
     height: 40px;
     padding-top: 11px;
     padding-bottom: 0;
     text-align: center;
     font-size: 14px;
+
 
 }
 #header .header_item:hover{
