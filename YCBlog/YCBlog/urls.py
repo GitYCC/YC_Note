@@ -15,9 +15,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from welcome.views import welcome
+from .views import welcome
+from .views import me
+from .views import coding
+from .views import reading
+from .views import living
 
 urlpatterns = [
     url(r'^admin/$', include(admin.site.urls)),
     url(r'^$', welcome),
+    url(r'^me/?$',me),
+    url(r'^coding/?$',coding),
+    url(r'^reading/?$',reading),
+    url(r'^living/?$',living),
 ]
