@@ -4,9 +4,9 @@
 {% load post_extras %}
 {% block content %}
 <div id="front_board">
-    <h1>Coding</h1>
-    <h2>Mechine Learning X Algorithm X Python</h2>
-    <img src="{% static "welcome/front_board_img.jpg" %}" alt="front board image" />
+    <h1>{{title}}</h1>
+    <h2>{{subtitle}}</h2>
+    <img src="{{front_board_img}}" alt="front board image" />
 </div>
 <div class="container">
     {% for post in posts %}

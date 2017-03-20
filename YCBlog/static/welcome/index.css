@@ -97,6 +97,113 @@ body {
 
 }
 
+
+.container {
+    width:90%;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+.container a {
+    color: rgba(0, 170, 175, 1.0);
+}
+.container a:hover{
+    color: rgba(20, 190, 195, 1.0);
+}
+.container a:visited{
+    outline: 0;
+    text-decoration: none;
+}
+.container a:link{
+    outline: 0;
+    text-decoration: none;
+}
+
+.post {
+    padding: 0;
+    margin:  0;
+}
+
+.post .post-heading {
+    margin:  0;
+    padding: 0;
+    border-bottom: grey solid 2px;
+}
+
+.post .post-heading .title {
+    font-size: 180%;
+    color: black;
+}
+
+
+
+.post .post-heading .info {
+    width:100%;
+    text-align:left;
+    margin-top: 1px;
+    margin-bottom: 10px;
+}
+
+.post .post-content {
+    overflow: auto;
+    width: 100%;
+    margin-bottom: 30px;
+}
+.post-wrapper {
+    position: relative;
+    border-top: solid 2px black;
+    padding: 5px 5% 5px 5%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    height: 500px;
+    
+    background: rgba(240, 240, 240, 1.0);
+}
+
+.post-wrapper .post .post-content {
+    overflow: hidden;
+    height: 300px;    
+}
+
+.post-wrapper .post-footer a{
+    position: absolute;
+    bottom: 0px;
+    left:0;
+    right:0;
+    padding: auto;
+    text-align: center;
+    background: rgba(120, 120, 120, 1);
+    height: 24px;
+    font-size: 16px;
+    color: white;
+    z-index: 0;
+
+}
+
+.post-wrapper .post .post-heading .title a {
+    color: black;
+}
+
+.post-wrapper .post .post-heading {
+    border-bottom: none;
+}
+
+
+#post_front_board {
+    width:100%;
+    height:250px;
+    overflow: hidden;
+}
+#post_front_board img {
+    width:100%;
+    top: -100%;
+    bottom:-100%;
+
+    position: relative;
+    margin: auto;
+
+}
+
 @media screen and (max-width: 600px)
 {
 
@@ -124,16 +231,41 @@ body {
     display: inline;
     padding-right: 5px;
 }
+#post_front_board {
+    height:150px;
+}
+#post_front_board img{
+    width:100%;
+    top: -10%;
+    bottom:-10%;
+
+
+    margin: auto;
+
+}
+.container .post-wrapper {
+    height: auto;
+    padding-bottom: 36px;
+}
+
+.container .post-wrapper h2 a{
+    font-size: 100%;
+}
+.container .post-wrapper .post-content{
+    display: none;
+}
+
+
 
 }
 
-@media (min-width: 768px) and (max-width: 979px) { 
+@media (min-width: 800px)  { 
+.container {
+    width:800px;
 
 }
-
-@media  (max-width: 979px) { 
-
 }
+
 
 
 

@@ -20,12 +20,15 @@ from .views import me
 from .views import coding
 from .views import reading
 from .views import living
+from .views import post
 
 urlpatterns = [
-    url(r'^admin/$', include(admin.site.urls)),
+    url(r'^god/mode/', include(admin.site.urls)),
     url(r'^$', welcome),
     url(r'^me/?$',me),
-    url(r'^coding/?$',coding),
+    url(r'^coding/?$',coding,name='coding'),
     url(r'^reading/?$',reading),
     url(r'^living/?$',living),
+    url(r'^YCNote/post/(?P<pk>\d+)(?:\.json)?',post),
+
 ]
