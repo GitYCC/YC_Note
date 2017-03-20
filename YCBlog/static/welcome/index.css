@@ -4,6 +4,7 @@ body {
     font-family: "SF Pro TC", "HanHei TC", "SF Pro Text",
      "Myriad Set Pro", "DF Pro Icons", "PingFang TC", "Helvetica Heuw","Microsoft JhengHei",
      Helvetica, Arial, sans-serif;
+
 }
 #header {
     position: fixed;
@@ -131,7 +132,7 @@ body {
 }
 
 .post .post-heading .title {
-    font-size: 180%;
+    font-size: 160%;
     color: black;
 }
 
@@ -148,6 +149,9 @@ body {
     overflow: auto;
     width: 100%;
     margin-bottom: 30px;
+    line-height: 26.4px;
+    letter-spacing: 0.5px;
+    color: rgb(77,77,77);
 }
 .post-wrapper {
     position: relative;
@@ -243,6 +247,12 @@ body {
     margin: auto;
 
 }
+
+.post .post-heading .title {
+    font-size: 130%;
+
+}
+
 .container .post-wrapper {
     height: auto;
     padding-bottom: 36px;
