@@ -146,13 +146,35 @@ body {
 }
 
 .post .post-content {
-    overflow: auto;
+    overflow: hidden;
     width: 100%;
     margin-bottom: 30px;
     line-height: 26.4px;
     letter-spacing: 0.5px;
-    color: rgb(77,77,77);
+    color: rgb(37,37,37);
 }
+
+.post .post-content img{
+    width: 100%;
+}
+.post .post-content p{
+
+    overflow: scroll;
+}
+.post .post-content pre {
+    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+    word-wrap: break-word;
+    font-size: 90%;
+    overflow: scroll;
+    padding: 1rem;
+    line-height: 1.45;
+    background-color: rgb(239, 240, 241);
+    border: 0;
+    border-radius: 3px;
+    color: rgb(57, 51, 24);
+    margin-top: 0 !important;
+}
+
 .post-wrapper {
     position: relative;
     border-top: solid 2px black;
