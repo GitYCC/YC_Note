@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.http import Http404
 from Posts.models import Post
 
-import pprint
+import pprint, re
 # Create your views here.
 
 def welcome(request):
@@ -38,11 +38,16 @@ def me(request):
     elif request.method == 'POST':
         pass
 
+
+    
+
+
 def coding(request):
 
     if request.method == 'GET':
         posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
         posts = posts.order_by('-post_time')
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
             'subtitle':"Mechine Learning X Algorithm X Python",
@@ -84,12 +89,13 @@ def living(request):
         pass
 
 def post(request,pk):
-
     if request.method == 'GET':
         post = Post.objects.get(pk=pk)
+
         if not post:
             return Http404
         else:
+            #post = _content_complement(post)
             return render(request,'post.html',
                 {'post':post})
 
