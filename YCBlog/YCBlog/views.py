@@ -70,8 +70,13 @@ def coding(request):
 def reading(request):
 
     if request.method == 'GET':
-        posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
-        posts = posts.order_by('-post_time')
+        posts = cache.get('reading_posts')
+        if not posts:
+            logging.warning("recharge cache with 'reading'")
+            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("reading_posts",posts,1800)
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Reading",
             'subtitle':"Be a Scientist",
@@ -85,8 +90,13 @@ def reading(request):
 def living(request):
 
     if request.method == 'GET':
-        posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
-        posts = posts.order_by('-post_time')
+        posts = cache.get('living_posts')
+        if not posts:
+            logging.warning("recharge cache with 'living'")
+            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.get("living_posts",posts,1800)
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Living",
             'subtitle':"My Life is Brilliant",
