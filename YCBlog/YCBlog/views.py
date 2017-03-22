@@ -51,7 +51,7 @@ def coding(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
             'subtitle':"Mechine Learning X Algorithm X Python",
-            'front_board_img':"/static/welcome/front_board_img.jpg"
+            'front_board_img':"/static/img/coding_front_board.jpg"
             })
 
 
@@ -66,7 +66,7 @@ def reading(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Reading",
             'subtitle':"Be a Scientist",
-            'front_board_img':"/static/welcome/front_board_img.jpg"
+            'front_board_img':"/static/img/reading_front_board.jpg"
             })
 
 
@@ -81,7 +81,7 @@ def living(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Living",
             'subtitle':"My Life is Brilliant",
-            'front_board_img':"/static/welcome/front_board_img.jpg"
+            'front_board_img':"/static/img/living_front_board.jpg"
             })
 
 
@@ -92,10 +92,13 @@ def post(request,pk):
     if request.method == 'GET':
         post = Post.objects.get(pk=pk)
 
+        if not post.front_board:
+            if post.kind == "Reading":
+                post.front_board = "/static/img/reading_front_board.jpg"
+
         if not post:
             return Http404
         else:
-            #post = _content_complement(post)
             return render(request,'post.html',
                 {'post':post})
 
