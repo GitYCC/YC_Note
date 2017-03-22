@@ -107,3 +107,17 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
 
 )
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11212',
+    }
+}
+# and install "brew install memcached" & "pip3.6 install python-memcached"
+
+
+
+
+
+

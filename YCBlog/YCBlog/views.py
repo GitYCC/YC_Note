@@ -6,8 +6,12 @@ from django.http import HttpResponse
 from django.http import Http404
 from Posts.models import Post
 
-import pprint, re
-# Create your views here.
+import pprint, re, datetime, logging
+
+from django.core.cache import cache
+
+def recordIP(request):
+    file = ""
 
 def welcome(request):
     #l = filter(lambda x: x.startswith('HTTP_'),request.META.keys())
@@ -45,8 +49,13 @@ def me(request):
 def coding(request):
 
     if request.method == 'GET':
-        posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
-        posts = posts.order_by('-post_time')
+        posts = cache.get('coding_posts')
+        if not posts:
+            logging.warning("recharge cache with 'coding'")
+            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("coding_posts",posts,1800)
+           
 
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
