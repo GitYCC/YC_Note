@@ -1,13 +1,48 @@
 {% extends 'base.html' %}
 
 {% load staticfiles %}
-mv 
+
 {% block content %}
         <div id="front_board">
             <h1>YC Note</h1>
             <h2>想像力比知識更重要</h2>
             <img src="{% static "img/welcome_front_board.jpg" %}" alt="front board image" />
         </div>
-
+        <div class="sub_board">
+            <div class="textbox">
+                <a href="/me/">
+                <h1>About Me</h1>
+                <h2>Hi, I am YC.</h2>
+                </a>
+            </div>
+            <img src="{% static "img/me_front_board.jpg" %}" alt="front board image" />
+        </div>
+        <div class="sub_board">
+            <div class="textbox">
+                <a href="/coding/">
+                <h1>Coding</h1>
+                <h2>Mechine Learning | Algorithm | Python</h2>
+                </a>
+            </div>
+            <img src="{% static "img/coding_front_board.jpg" %}" alt="front board image" />
+        </div>
+        <div class="sub_board">
+            <div class="textbox">
+                <a href="/reading/">
+                <h1>Reading</h1>
+                <h2>Be a Scientist</h2>
+                </a>
+            </div>
+            <img src="{% static "img/reading_front_board.jpg" %}" alt="front board image" />
+        </div>
+        <div class="sub_board">
+            <div class="textbox">
+                <a href="/living/">
+                <h1>Living</h1>
+                <h2>My Life is Brilliant</h2>
+                </a>
+            </div>
+            <img src="{% static "img/living_front_board.jpg" %}" alt="front board image" />
+        </div>
 {% endblock %}
 

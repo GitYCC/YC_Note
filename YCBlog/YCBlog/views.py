@@ -50,7 +50,7 @@ def coding(request):
 
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
-            'subtitle':"Mechine Learning X Algorithm X Python",
+            'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"/static/img/coding_front_board.jpg"
             })
 
@@ -99,7 +99,7 @@ def post(request,pk):
                 post.front_board = "/static/img/reading_front_board.jpg"
             elif post.kind == "Living":
                 post.front_board = "/static/img/living_front_board.jpg"
-                
+
         if not post:
             return Http404
         else:

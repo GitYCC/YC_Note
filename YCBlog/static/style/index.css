@@ -98,6 +98,64 @@ body {
 
 }
 
+.sub_board {
+    width: 100%;
+    height: 50vw;
+    background: rgba(0, 0, 0, 0.6);
+    overflow:hidden;
+    position: relative;
+
+    right: 0;
+    left: 0;
+    color: white;
+    text-align: center;
+    margin: 0;
+    padding: auto;
+}
+.sub_board img {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    top:   0;
+    left:  0;
+    right: 0;
+}
+.sub_board .textbox {
+    width: 50%;
+    height: 16vw;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin:  auto;
+}
+
+.sub_board .textbox a:link{
+
+    outline: 0;
+    text-decoration: none;
+}
+.sub_board .textbox a:visited{
+    color: white;
+    outline: 0;
+    text-decoration: none;
+}
+.sub_board .textbox a:hover{
+    text-shadow:6px 6px 4px black;
+}
+
+.sub_board .textbox h1 {
+    height: 8vw;
+    border-bottom: solid 3px white;
+    font-size: 6vw;
+    margin: 0;
+}
+.sub_board .textbox h2 {
+    height: 8vw;
+    font-size: 3vw;
+}
+
 
 .container {
     width:90%;
