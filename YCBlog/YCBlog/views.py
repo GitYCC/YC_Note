@@ -93,9 +93,13 @@ def post(request,pk):
         post = Post.objects.get(pk=pk)
 
         if not post.front_board:
-            if post.kind == "Reading":
+            if post.kind == "Coding":
+                post.front_board = "/static/img/coding_front_board.jpg"
+            elif post.kind == "Reading":
                 post.front_board = "/static/img/reading_front_board.jpg"
-
+            elif post.kind == "Living":
+                post.front_board = "/static/img/living_front_board.jpg"
+                
         if not post:
             return Http404
         else:

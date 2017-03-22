@@ -132,6 +132,7 @@ body {
 }
 
 .post .post-heading .title {
+    padding-top: 15px;
     font-size: 160%;
     color: black;
 }
@@ -293,8 +294,8 @@ body {
 }
 
 @media (min-width: 800px)  { 
-.container {
-    width:800px;
+.container  {
+    width:850px;
 
 }
 }
