@@ -10,8 +10,26 @@ import pprint, re, datetime, logging
 
 from django.core.cache import cache
 
-def recordIP(request):
-    file = ""
+def get_client_ip(request):
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+def is_loggin(request):
+    return request.user!="AnonymousUser"
+
+def record_ip(request):
+    ip = get_client_ip(request)
+    method = request.method
+    path = request.get_full_path()
+    agent = request.META.get('HTTP_USER_AGENT')
+    user = request.user
+    string = "{}|{}|{} {}|{}|:|".format(ip,user,method,path,agent)
+    with open("../login.log","a") as f:
+        f.write(string)
 
 def welcome(request):
     #l = filter(lambda x: x.startswith('HTTP_'),request.META.keys())
@@ -47,7 +65,8 @@ def me(request):
 
 
 def coding(request):
-
+    record_ip(request)
+    is_loggin(request)
     if request.method == 'GET':
         posts = cache.get('coding_posts')
         if not posts:

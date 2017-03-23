@@ -21,6 +21,7 @@ from .views import coding
 from .views import reading
 from .views import living
 from .views import post
+# TO-DO: from .views import static_handle
 
 urlpatterns = [
     url(r'^god/mode/', include(admin.site.urls)),
@@ -30,5 +31,6 @@ urlpatterns = [
     url(r'^reading/?$',reading),
     url(r'^living/?$',living),
     url(r'^YCNote/post/(?P<pk>\d+)(?:\.json)?',post),
+    #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]
