@@ -28,7 +28,7 @@ def record_ip(request):
     agent = request.META.get('HTTP_USER_AGENT')
     user = request.user
     string = "{}|{}|{} {}|{}|:|".format(ip,user,method,path,agent)
-    with open("../login.log","a") as f:
+    with open("login.log","a") as f:
         f.write(string)
 
 def welcome(request):
@@ -37,7 +37,7 @@ def welcome(request):
     #print(l)
     #for i in l:
     #    print("{}, {}".format(i,str(request.META[i])))
-
+    record_ip(request)
     if request.method == 'GET':
         return render(request,'welcome.html',{})
 
@@ -52,7 +52,7 @@ def me(request):
     #print(l)
     #for i in l:
     #    print("{}, {}".format(i,str(request.META[i])))
-
+    record_ip(request)
     if request.method == 'GET':
         return render(request,'me.html',{})
 
@@ -66,7 +66,7 @@ def me(request):
 
 def coding(request):
     record_ip(request)
-    is_loggin(request)
+
     if request.method == 'GET':
         posts = cache.get('coding_posts')
         if not posts:
@@ -87,7 +87,7 @@ def coding(request):
         pass
 
 def reading(request):
-
+    record_ip(request)
     if request.method == 'GET':
         posts = cache.get('reading_posts')
         if not posts:
@@ -107,7 +107,7 @@ def reading(request):
         pass
 
 def living(request):
-
+    record_ip(request)
     if request.method == 'GET':
         posts = cache.get('living_posts')
         if not posts:
@@ -127,6 +127,7 @@ def living(request):
         pass
 
 def post(request,pk):
+    record_ip(request)
     if request.method == 'GET':
         post = Post.objects.get(pk=pk)
 
