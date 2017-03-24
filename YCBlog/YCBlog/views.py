@@ -56,14 +56,11 @@ def welcome(request):
 
 
 def me(request):
-    #l = filter(lambda x: x.startswith('HTTP_'),request.META.keys())
-    #l = list(l)
-    #print(l)
-    #for i in l:
-    #    print("{}, {}".format(i,str(request.META[i])))
+
     record_ip(request)
     if request.method == 'GET':
-        return render(request,'me.html',{})
+        me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
+        return render(request,'me.html',{'post':me_post})
 
 
     elif request.method == 'POST':
