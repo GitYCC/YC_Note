@@ -21,6 +21,18 @@ class Post(models.Model):
         self._content_complement()
         super(Post, self).save(*args, **kwargs) 
 
+    def save_by_dict(self,aDict):
+        self.title = aDict['title']
+        self.content = aDict['content']
+        self.file = aDict['file']
+        self.post_time = aDict['post_time']
+        self.isPublic = aDict['isPublic']
+        self.kind = aDict['kind']
+        self.tags = aDict['tags']
+        self.author = aDict['author']
+        self.front_board = aDict['front_board']
+        self.save()
+
     def _content_complement(self):
         if not self.content and self.file:
             text = urllib.request.urlopen(self.file).read().decode("utf-8") 

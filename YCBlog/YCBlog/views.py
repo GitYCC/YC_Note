@@ -235,9 +235,7 @@ def post_edit(request,pk):
         else:
             if  aDict['title'] and aDict['kind'] and aDict['author'] and aDict['post_time']:
                 post = Post.objects.get(pk=pk)
-                for key in aDict:
-                    post[key] = aDict[key]
-                post.save()
+                post.save_by_dict(aDict)
                 return redirect('/god/admin/')
             else:
                 return render(request,'post_edit.html',{"post":aDict,"isNew":"False"})
