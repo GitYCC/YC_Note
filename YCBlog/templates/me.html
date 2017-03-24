@@ -2,11 +2,15 @@
 
 
 {% block content %}
-        <div id="front_board">
-            <h1>About Me</h1>
-            <h2>Hi, I am YC.</h2>
-            <img src="https://dl.dropboxusercontent.com/s/aahvzock2aijs6q/me_front_board.jpg" alt="front board image" />
-        </div>
-
+<div id="front_board">
+    <h1>About Me</h1>
+    <h2>Hi, I am YC.</h2>
+    <img src="https://dl.dropboxusercontent.com/s/aahvzock2aijs6q/me_front_board.jpg" alt="front board image" />
+</div>
+<div class="me-container">
+    <div class="post-content">
+        {{post.content | safe}}
+    </div> 
+</div>
 {% endblock %}
 
