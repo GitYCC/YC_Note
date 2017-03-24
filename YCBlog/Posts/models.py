@@ -1,7 +1,7 @@
 from django.db import models
 import markdown2, urllib
 from django.core.cache import cache
-import logging
+import time
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=500)
@@ -48,6 +48,7 @@ class Post(models.Model):
             self.content = html
     
     def _refresh_memcached(self):
+        time.sleep(2)
         if self.kind == "Coding":
             cache.delete("coding_posts")
         elif self.kind == "Reading":
