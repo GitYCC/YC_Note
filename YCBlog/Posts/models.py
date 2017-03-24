@@ -21,6 +21,14 @@ class Post(models.Model):
         self._content_complement()
         super(Post, self).save(*args, **kwargs) 
 
+    def delete(self, *args, **kwargs):
+        self._refresh_memcached()        
+        super(Post, self).delete(*args, **kwargs)
+
+    def create(self, *args, **kwargs):
+        self._refresh_memcached()        
+        super(Post, self).create(*args, **kwargs)
+
     def save_by_dict(self,aDict):
         self.title = aDict['title']
         self.content = aDict['content']
@@ -46,3 +54,4 @@ class Post(models.Model):
             cache.delete("reading_posts")
         elif self.kind == "Living":
             cache.delete("living_posts")
+
