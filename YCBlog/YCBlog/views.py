@@ -7,8 +7,8 @@ from django.http import Http404
 from Posts.models import Post
 from Accounts.models import Account
 
-import pprint, re, datetime, logging
-
+import pprint, re, datetime, logging, os
+from YCBlog import settings
 
 from django.core.cache import cache
 
@@ -20,18 +20,24 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-def is_loggin(request):
-    return request.user!="AnonymousUser"
 
 def record_ip(request):
     ip = get_client_ip(request)
+    now = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     method = request.method
     path = request.get_full_path()
     agent = request.META.get('HTTP_USER_AGENT')
     user = request.user
-    string = "{}|{}|{} {}|{}|:|".format(ip,user,method,path,agent)
-    with open("login.log","a") as f:
+    string = "{}|{}|{}|{} {}|{}|:|\n".format(now,ip,user,method,path,agent)
+    with open(os.path.join(settings.BASE_DIR,"log.html"),"a") as f:
         f.write(string)
+
+def log(request):
+    if not verify_cookie(request): return redirect('/god/login/')
+    with open(os.path.join(settings.BASE_DIR,"log.html"),"r") as f:
+        readlines = "".join(f.readlines())
+        readlines = readlines.replace("\n","<br/>")
+    return HttpResponse(readlines)
 
 def welcome(request):
     #l = filter(lambda x: x.startswith('HTTP_'),request.META.keys())
@@ -247,4 +253,6 @@ def post_preview(request,pk):
     if not verify_cookie(request): return redirect('/god/login/')
     if request.method == 'GET':   
         return post(request,pk)
+
+
 

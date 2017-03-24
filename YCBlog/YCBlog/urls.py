@@ -27,7 +27,7 @@ from .views import myadmin
 from .views import post_edit
 from .views import post_delete
 from .views import post_preview
-
+from .views import log
 # TO-DO: from .views import static_handle
 
 urlpatterns = [
@@ -44,6 +44,7 @@ urlpatterns = [
     url(r'^god/admin/posts/(?P<pk>\d+)/delete$',post_delete),
     url(r'^god/admin/posts/(?P<pk>\d+)/preview$',post_preview),
     url(r'^god/logout/$',logout),
+    url(r'^god/admin/log/$',log)
     #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]
