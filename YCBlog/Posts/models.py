@@ -1,7 +1,7 @@
 from django.db import models
 import markdown2, urllib
 from django.core.cache import cache
-
+import logging
 # Create your models here.
 class Post(models.Model):
     title = models.CharField(max_length=500)
