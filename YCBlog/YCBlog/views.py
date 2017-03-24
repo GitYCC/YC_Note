@@ -249,7 +249,8 @@ def post_delete(request,pk):
     if request.method == 'POST':
         if pk == "000":
             return redirect('/god/admin/')
-        Post.objects.filter(pk=pk).delete()    
+        post = Post.objects.get(pk=pk)
+        post.delete()    
         return redirect('/god/admin/')
 
 def post_preview(request,pk):
