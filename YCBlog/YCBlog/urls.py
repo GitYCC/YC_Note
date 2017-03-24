@@ -21,16 +21,29 @@ from .views import coding
 from .views import reading
 from .views import living
 from .views import post
+from .views import login
+from .views import logout
+from .views import myadmin
+from .views import post_edit
+from .views import post_delete
+from .views import post_preview
+
 # TO-DO: from .views import static_handle
 
 urlpatterns = [
-    url(r'^god/mode/', include(admin.site.urls)),
+    #url(r'^god/mode/', include(admin.site.urls)),
     url(r'^$', welcome),
     url(r'^me/?$',me),
     url(r'^coding/?$',coding,name='coding'),
     url(r'^reading/?$',reading),
     url(r'^living/?$',living),
     url(r'^YCNote/post/(?P<pk>\d+)(?:\.json)?',post),
+    url(r'^god/login/$',login),
+    url(r'^god/admin/$',myadmin),
+    url(r'^god/admin/posts/(?P<pk>\d+)$',post_edit),
+    url(r'^god/admin/posts/(?P<pk>\d+)/delete$',post_delete),
+    url(r'^god/admin/posts/(?P<pk>\d+)/preview$',post_preview),
+    url(r'^god/logout/$',logout),
     #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]

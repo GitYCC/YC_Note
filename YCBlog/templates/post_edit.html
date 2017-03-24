@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div id="admin">
+<form method="POST" action="{{post.pk}}/delete">
+    <input type="submit" value="Delete" />
+</form>
+<br>
+<form method="POST" >
+    {% csrf_token %} 
+    <div class="form-element">
+        <label>* Title: </label>
+        <input name="title" value="{{post.title}}" />
+    </div>
+    <div class="form-element">
+        <label>Content: </label>
+        <textarea name="content">{{post.content}}</textarea>
+    </div> 
+    <div class="form-element">
+        <label>MD File: </label>
+        <input name="file" value="{{post.file}}" />
+    </div>     
+    <div class="form-element">
+        <label>* Kind: </label>
+        <input name="kind" value="{{post.kind}}" />
+    </div> 
+    <div class="form-element">
+        <label>Tags: </label>
+        <input name="tags" value="{{post.tags}}" />
+    </div> 
+    <div class="form-element">
+        <label>* Author: </label>
+        <input name="author" value="{{post.author}}" />
+    </div> 
+    <div class="form-element">
+        <label>Front Board IMG: </label>
+        <input name="front_board" value="{{post.front_board}}" " />
+    </div> 
+    <div class="form-element">
+        <label>* Post Time: </label>
+        <input name="post_time" type="datetime-local" value="{{ post.post_time }}" />
+    </div>     
+    <div class="form-element">
+        <label>* Publish?: </label>
+        <input name="isPublic" type="checkbox" value="YES" {% if post.isPublic %} checked="checked" {% endif %} />
+    </div>  
+    <input type="hidden" name="isNew" value="{{isNew}}" />
+    <div style="color: red">
+        {{err}}        
+    </div>  
+    <input type="submit" style="width:60%;">
+</form>
+<form method="GET" action="/god/admin/">
+    <input type="submit" value="Return" style="width:535px"/>
+</form>
+<br>
+<br>
+    
+</div>
+{% endblock %}
+
+
+
+
+

@@ -25,8 +25,7 @@ SECRET_KEY = 'n5s&k&es6ybp2#(4idf%zdrg9tyd+(!zepofte+_vs=*)3t%)v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.ycc.idv.tw',
-                'localhost', '127.0.0.1','192.168.2.201']
+ALLOWED_HOSTS = ['www.ycc.idv.tw',]
 
 
 # Application definition
@@ -40,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'Posts',
     'Posts.templatetags',
+    'Accounts',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,8 +116,6 @@ CACHES = {
     }
 }
 # and install "brew install memcached" & "pip3.6 install python-memcached"
-
-
 
 
 

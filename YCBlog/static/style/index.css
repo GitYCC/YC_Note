@@ -291,6 +291,43 @@ body {
 
 }
 
+#admin {
+    font-size: 14px;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+
+    position:relative;
+    width:70%;
+
+    margin-top:60px;
+    padding:auto;
+ 
+}
+#admin .form-element {
+    
+    position:relative;
+    margin:20px;
+    padding:0;
+
+}
+#admin .form-element label{
+    font-weight: bold;
+    position: relative;
+    width: 10%;
+}
+#admin .form-element input {
+    right: 0;
+    font-size: 14px;
+    position: relative;
+    width: 80%;
+}
+#admin .form-element textarea {
+    font-size: 14px;
+    width: 97%;
+    height: 600px;
+}
+
 @media screen and (max-width: 600px)
 {
 

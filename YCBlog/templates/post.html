@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 
-{% load staticfiles %}
 {% load post_extras %}
 {% block content %}
 <div id="post_front_board">
     {% if post.front_board %}
     <img src="{{post.front_board}}" alt="post front board image"/>
     {% else %}
-    <img src="/static/img/welcome_front_board.jpg" alt="post front board image"/>   
+    <img src="https://dl.dropboxusercontent.com/s/1j910ymg4hnxxqi/welcome_front_board.jpg" alt="post front board image"/>   
     {% endif %} 
 </div>
 <div class="container">
