@@ -17,17 +17,17 @@ class Post(models.Model):
     front_board = models.URLField(max_length=500,blank=True)
 
     def save(self, *args, **kwargs):
-        self._refresh_memcached()
         self._content_complement()
         super(Post, self).save(*args, **kwargs) 
+        self._refresh_memcached()
 
     def delete(self, *args, **kwargs):
-        self._refresh_memcached()        
         super(Post, self).delete(*args, **kwargs)
+        self._refresh_memcached()
 
     def create(self, *args, **kwargs):
-        self._refresh_memcached()        
         super(Post, self).create(*args, **kwargs)
+        self._refresh_memcached()
 
     def save_by_dict(self,aDict):
         self.title = aDict['title']
