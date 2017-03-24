@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.http import Http404
 from Posts.models import Post
 from Accounts.models import Account
+from django.middleware.csrf import get_token
 
 import pprint, re, datetime, logging, os
 from YCBlog import settings
@@ -243,6 +244,7 @@ def post_edit(request,pk):
             return render(request,'post_edit.html',{"post":post})
 
 def post_delete(request,pk):
+    #request = get_token(request)
     if not verify_cookie(request): return redirect('/god/login/')
     if request.method == 'POST':
         if pk == "000":

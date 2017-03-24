@@ -3,6 +3,7 @@
 {% block content %}
 <div id="admin">
 <form method="POST" action="{{post.pk}}/delete">
+    {% csrf_token %} 
     <input type="submit" value="Delete" />
 </form>
 <br>
