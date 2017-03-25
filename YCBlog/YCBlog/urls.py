@@ -45,8 +45,8 @@ urlpatterns = [
     url(r'^god/admin/posts/(?P<pk>\d+)/delete$',post_delete),
     url(r'^god/admin/posts/(?P<pk>\d+)/preview$',post_preview),
     url(r'^god/logout/$',logout),
-    url(r'^god/admin/log/$',log)
-    url(r'^god/admin/flush_cache/$',flush_cache)
+    url(r'^god/admin/log/$',log),
+    url(r'^god/admin/flush_cache/$',flush_cache),
     #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]
