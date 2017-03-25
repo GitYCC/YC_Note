@@ -43,11 +43,12 @@ def record_ip(request):
     custom = "{}|{}".format(ip,agent)
     if custom not in ID_list:
         with open(html_ID,"a") as f:
-            f.write('{:05d}'.format(len(ID_list))+"|||"+custom+"\n")
+            f.write('ID{:05d}'.format(len(ID_list))+"|||"+custom+"\n")
         ID_list.append(custom)
+        cache.set("record_ip_ID",ID_list,3000)
 
     ID = ID_list.index(custom)
-    string = "{}|{:05d}|{} {}|:|\n".format(now,ID,method,path)
+    string = "{}|ID{:05d}|{} {}|:|\n".format(now,ID,method,path)
     with open(html_log,"a") as f:
         f.write(string)
 
@@ -64,6 +65,8 @@ def log(request):
         readlines = readlines.replace("\n","<br/>")
         output += readlines
     return HttpResponse(output)
+
+
 
 def welcome(request):
     record_ip(request)
@@ -280,4 +283,10 @@ def post_preview(request,pk):
         return post(request,pk)
 
 
+def flush_cache(request):
+    if not verify_cookie(request): return redirect('/god/login/')
+    cache._cache.flush_all()
+    return redirect('/god/admin/')
 
+
+    
