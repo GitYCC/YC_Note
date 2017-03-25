@@ -29,7 +29,7 @@ def record_ip(request):
     path = request.get_full_path()
     agent = request.META.get('HTTP_USER_AGENT')
     user = request.user
-    string = "{}|{}|{}|{} {}|{}|:|\n".format(now,ip,user,method,path,agent)
+    string = "{}|{} {}|{}|{}|:|\n".format(now,method,path,ip,agent)
     with open(os.path.join(settings.BASE_DIR,"log.html"),"a") as f:
         f.write(string)
 
@@ -41,11 +41,6 @@ def log(request):
     return HttpResponse(readlines)
 
 def welcome(request):
-    #l = filter(lambda x: x.startswith('HTTP_'),request.META.keys())
-    #l = list(l)
-    #print(l)
-    #for i in l:
-    #    print("{}, {}".format(i,str(request.META[i])))
     record_ip(request)
     if request.method == 'GET':
         return render(request,'welcome.html',{})
@@ -168,6 +163,7 @@ def set_cookie(response, key, value, days_expire = 0.5):
 
 
 def login(request):
+    record_ip(request)
     if request.method == 'GET':
         return render(request,'login.html',{})
     elif request.method == 'POST':
@@ -186,6 +182,7 @@ def login(request):
         return render(request,'login.html',{'err':"wrong user or password"})
 
 def logout(request):
+    record_ip(request)
     if request.method == 'GET':
         response = redirect('/god/login/')
         return set_cookie(response,'si-um-zr', "")
@@ -199,6 +196,7 @@ def verify_cookie(request):
 
 
 def myadmin(request):
+    record_ip(request)
     if not verify_cookie(request): return redirect('/god/login/')
     if request.method == 'GET':
         username = Account.checkHashUsername(request.COOKIES['si-um-zr'])
@@ -207,6 +205,7 @@ def myadmin(request):
         
 
 def post_edit(request,pk):
+    record_ip(request)
     if not verify_cookie(request): return redirect('/god/login/')
     if request.method == 'GET':      
         if not pk=="000":
