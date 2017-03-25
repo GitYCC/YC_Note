@@ -40,7 +40,7 @@ def record_ip(request):
     custom = "{}|{}".format(ip,agent)
     if custom not in ID_list:
         with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"a") as f:
-            f.write('{:05d}'format(len(ID_list))+"|||"+custom+"\n")
+            f.write('{:05d}'.format(len(ID_list))+"|||"+custom+"\n")
         ID_list.append(custom)
 
     ID = ID_list.index(custom)
