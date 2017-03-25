@@ -25,7 +25,7 @@ SECRET_KEY = 'n5s&k&es6ybp2#(4idf%zdrg9tyd+(!zepofte+_vs=*)3t%)v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['www.ycc.idv.tw',]
+ALLOWED_HOSTS = ['www.ycc.idv.tw*','http://www.ycc.idv.tw*']
 
 
 # Application definition

@@ -30,8 +30,11 @@ def record_ip(request):
     agent = request.META.get('HTTP_USER_AGENT')
     user = request.user
     ID_list = cache.get('record_ip_ID')
+    html_ID = os.path.join(settings.BASE_DIR,"log_ID.html")
+    html_log = os.path.join(settings.BASE_DIR,"log.html")
     if not ID_list:
-        with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"r") as f:
+        if not os.path.isfile(html_ID): open(html_ID,'a').close()
+        with open(html_ID,"r") as f: 
             ID_list = []
             for line in f.readlines():
                 index, custom = line.strip().split('|||')
@@ -39,13 +42,13 @@ def record_ip(request):
             cache.set("record_ip_ID",ID_list,3000)
     custom = "{}|{}".format(ip,agent)
     if custom not in ID_list:
-        with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"a") as f:
+        with open(html_ID,"a") as f:
             f.write('{:05d}'.format(len(ID_list))+"|||"+custom+"\n")
         ID_list.append(custom)
 
     ID = ID_list.index(custom)
     string = "{}|{:05d}|{} {}|:|\n".format(now,ID,method,path)
-    with open(os.path.join(settings.BASE_DIR,"log.html"),"a") as f:
+    with open(html_log,"a") as f:
         f.write(string)
 
 def log(request):
