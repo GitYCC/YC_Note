@@ -29,16 +29,38 @@ def record_ip(request):
     path = request.get_full_path()
     agent = request.META.get('HTTP_USER_AGENT')
     user = request.user
-    string = "{}|{} {}|{}|{}|:|\n".format(now,method,path,ip,agent)
+    ID_list = cache.get('record_ip_ID')
+    if not ID_list:
+        with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"r") as f:
+            ID_list = []
+            for line in f.readlines():
+                index, custom = line.strip().split('|||')
+                ID_list.append(custom)
+            cache.set("record_ip_ID",ID_list,3000)
+    custom = "{}|{}".format(ip,agent)
+    if custom not in ID_list:
+        with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"a") as f:
+            f.write('{:05d}'format(len(ID_list))+"|||"+custom+"\n")
+        ID_list.append(custom)
+
+    ID = ID_list.index(custom)
+    string = "{}|{:05d}|{} {}|:|\n".format(now,ID,method,path)
     with open(os.path.join(settings.BASE_DIR,"log.html"),"a") as f:
         f.write(string)
 
 def log(request):
     if not verify_cookie(request): return redirect('/god/login/')
+    output = ''
+    with open(os.path.join(settings.BASE_DIR,"log_ID.html"),"r") as f:
+        readlines = "".join(f.readlines())
+        readlines = readlines.replace("\n","<br/>")
+        output += readlines
+    output += '--------------<br/>'
     with open(os.path.join(settings.BASE_DIR,"log.html"),"r") as f:
         readlines = "".join(f.readlines())
         readlines = readlines.replace("\n","<br/>")
-    return HttpResponse(readlines)
+        output += readlines
+    return HttpResponse(output)
 
 def welcome(request):
     record_ip(request)
