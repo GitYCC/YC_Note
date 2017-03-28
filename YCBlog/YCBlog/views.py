@@ -202,7 +202,7 @@ def post(request,pk):
             return Http404
         else:
             return render(request,'post.html',
-                {'post':post, 'TITLE':str(post.title)})
+                {'post':post, 'TITLE':": "+str(post.title)})
 
 
     elif request.method == 'POST':
