@@ -72,7 +72,7 @@ def welcome(request):
     record_ip(request)
     if request.method == 'GET':
         min_files = 3
-        
+
         posts = cache.get('coding_posts')
         if not posts:
             logging.warning("recharge cache with 'coding'")
@@ -98,7 +98,7 @@ def welcome(request):
         living_tops = posts[0:min(min_files,len(posts))]
 
         return render(request,'welcome.html',{'coding_tops':coding_tops,'reading_tops':reading_tops,
-                                            'living_tops':living_tops})
+                                            'living_tops':living_tops,'TITLE':""})
 
 
     elif request.method == 'POST':
@@ -110,7 +110,7 @@ def me(request):
     record_ip(request)
     if request.method == 'GET':
         me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
-        return render(request,'me.html',{'post':me_post})
+        return render(request,'me.html',{'post':me_post,'TITLE':": About Me"})
 
 
     elif request.method == 'POST':
@@ -135,7 +135,8 @@ def coding(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg"
+            'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
+            'TITLE':": Coding"
             })
 
 
@@ -155,7 +156,8 @@ def reading(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Reading",
             'subtitle':"Be a Scientist",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg"
+            'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
+            'TITLE':": Reading"
             })
 
 
@@ -175,7 +177,8 @@ def living(request):
         return render(request,'posts.html',
             {'posts':posts,'title':"Living",
             'subtitle':"My Life is Brilliant",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg"
+            'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
+            'TITLE':": Living"
             })
 
 
@@ -199,7 +202,7 @@ def post(request,pk):
             return Http404
         else:
             return render(request,'post.html',
-                {'post':post})
+                {'post':post, 'TITLE':str(post.title)})
 
 
     elif request.method == 'POST':
