@@ -318,5 +318,7 @@ def flush_cache(request):
     cache._cache.flush_all()
     return redirect('/god/admin/')
 
+def google_console(request):
+    return render(request,"googleb03eb416eb102f2d.html")
 
     

@@ -29,6 +29,7 @@ from .views import post_delete
 from .views import post_preview
 from .views import log
 from .views import flush_cache
+from .views import google_console
 # TO-DO: from .views import static_handle
 
 urlpatterns = [
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^god/logout/$',logout),
     url(r'^god/admin/log/$',log),
     url(r'^god/admin/flush_cache/$',flush_cache),
+    url(r'^googleb03eb416eb102f2d.html',google_console),
     #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]
