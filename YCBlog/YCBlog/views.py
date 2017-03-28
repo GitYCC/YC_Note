@@ -71,7 +71,32 @@ def log(request):
 def welcome(request):
     record_ip(request)
     if request.method == 'GET':
-        return render(request,'welcome.html',{})
+        posts = cache.get('coding_posts')
+        if not posts:
+            logging.warning("recharge cache with 'coding'")
+            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("coding_posts",posts,1800)
+        coding_tops = posts[0:min(3,len(posts))]
+
+        posts = cache.get('reading_posts')
+        if not posts:
+            logging.warning("recharge cache with 'reading'")
+            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("reading_posts",posts,1800)
+        reading_tops = posts[0:min(3,len(posts))]
+
+        posts = cache.get('living_posts')
+        if not posts:
+            logging.warning("recharge cache with 'living'")
+            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.get("living_posts",posts,1800)
+        living_tops = posts[0:min(3,len(posts))]
+
+        return render(request,'welcome.html',{'coding_tops':coding_tops,'reading_tops':reading_tops,
+                                            'living_tops':living_tops})
 
 
     elif request.method == 'POST':
