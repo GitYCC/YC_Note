@@ -18,6 +18,7 @@
                 <h1><a href="/coding/">Coding</a></h1>
                 {% for post in coding_tops %}
                 <h2><a href="/coding#PostID{{post.pk}}">{{post.title}}</a></h2>
+                <div style="visibility: hidden;">{{post.content}}</div>
                 {% endfor %}
             </div>
             <img src="https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg" />
@@ -27,6 +28,7 @@
                 <h1><a href="/reading/">Reading</a></h1>
                 {% for post in reading_tops %}
                 <h2><a href="/reading#PostID{{post.pk}}">{{post.title}}</a></h2>
+                <div style="visibility: hidden;">{{post.content}}</div>
                 {% endfor %}
             </div>
             <img src="https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg" alt="front board image" />
@@ -36,6 +38,7 @@
                 <h1><a href="/living/">Living</a></h1>
                 {% for post in living_tops %}
                 <h2><a href="/living#PostID{{post.pk}}">{{post.title}}</a></h2>
+                <div style="visibility: hidden;">{{post.content}}</div>
                 {% endfor %}
             </div>
             <img src="https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg" alt="front board image" />
