@@ -9,9 +9,9 @@
 
         <div class="sub_board">
             <div class="textbox">
-                <h2><a href="/coding/">Coding</a></h2>
+                <h1><a href="/coding/">Coding</a></h1>
                 {% for post in coding_tops %}
-                <h3><a href="/coding#PostID{{post.pk}}">{{post.title}}</a></h3>
+                <h2><a href="/coding#PostID{{post.pk}}">{{post.title}}</a></h2>
                 <div style="visibility: hidden;overflow: hidden;height: 0;">{{post.content}}</div>
                 {% endfor %}
             </div>
@@ -19,9 +19,9 @@
         </div>
         <div class="sub_board">
             <div class="textbox">
-                <h2><a href="/reading/">Reading</a></h2>
+                <h1><a href="/reading/">Reading</a></h1>
                 {% for post in reading_tops %}
-                <h3><a href="/reading#PostID{{post.pk}}">{{post.title}}</a></h3>
+                <h2><a href="/reading#PostID{{post.pk}}">{{post.title}}</a></h2>
                 <div style="visibility: hidden;overflow: hidden;height: 0;">{{post.content}}</div>
                 {% endfor %}
             </div>
@@ -29,9 +29,9 @@
         </div>
         <div class="sub_board">
             <div class="textbox">
-                <h2><a href="/living/">Living</a></h2>
+                <h1><a href="/living/">Living</a></h1>
                 {% for post in living_tops %}
-                <h3><a href="/living#PostID{{post.pk}}">{{post.title}}</a></h3>
+                <h2><a href="/living#PostID{{post.pk}}">{{post.title}}</a></h2>
                 <div style="visibility: hidden;overflow: hidden;height: 0;">{{post.content}}</div>
                 {% endfor %}
             </div>

@@ -71,7 +71,7 @@ def log(request):
 def welcome(request):
     record_ip(request)
     if request.method == 'GET':
-        min_files = 3
+        max_files = 7
 
         posts = cache.get('coding_posts')
         if not posts:
@@ -79,7 +79,7 @@ def welcome(request):
             posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
             cache.set("coding_posts",posts,1800)
-        coding_tops = posts[0:min(min_files,len(posts))]
+        coding_tops = posts[0:min(max_files,len(posts))]
 
         posts = cache.get('reading_posts')
         if not posts:
@@ -87,7 +87,7 @@ def welcome(request):
             posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
             cache.set("reading_posts",posts,1800)
-        reading_tops = posts[0:min(min_files,len(posts))]
+        reading_tops = posts[0:min(max_files,len(posts))]
 
         posts = cache.get('living_posts')
         if not posts:
@@ -95,7 +95,7 @@ def welcome(request):
             posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
             cache.get("living_posts",posts,1800)
-        living_tops = posts[0:min(min_files,len(posts))]
+        living_tops = posts[0:min(max_files,len(posts))]
 
         return render(request,'welcome.html',{'coding_tops':coding_tops,'reading_tops':reading_tops,
                                             'living_tops':living_tops,'TITLE':""})
