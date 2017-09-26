@@ -7,7 +7,15 @@
     <h2>{{subtitle}}</h2>
     <img src="{{front_board_img}}" alt="front board image" />
 </div>
+
 <div class="container">
+    <div class="tag_container">
+        {% for tag in tags %}
+        <div class="posts_tag">
+            <a href="/tag__{{tag}}">{{tag}}</a>
+        </div>
+        {% endfor %}  
+    </div>
     {% for post in posts %}
     <div id="PostID{{post.pk}}" style="padding-top: 5px;"> </div>
     <div  class="post-wrapper">

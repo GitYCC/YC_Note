@@ -116,9 +116,12 @@ def me(request):
     elif request.method == 'POST':
         pass
 
-
-    
-
+def get_tags(posts):
+    tags = []
+    for post in posts:
+        for tag in post.tags.split(','):
+            if tag!='' and tag not in tags: tags.append(tag)
+    return tags
 
 def coding(request):
     record_ip(request)
@@ -130,13 +133,14 @@ def coding(request):
             posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
             cache.set("coding_posts",posts,1800)
-           
+        
 
         return render(request,'posts.html',
             {'posts':posts,'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
-            'TITLE':": Coding"
+            'TITLE':": Coding",
+            'tags':get_tags(posts)
             })
 
 
@@ -157,7 +161,8 @@ def reading(request):
             {'posts':posts,'title':"Reading",
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
-            'TITLE':": Reading"
+            'TITLE':": Reading",
+            'tags':get_tags(posts)
             })
 
 
@@ -172,13 +177,33 @@ def living(request):
             logging.warning("recharge cache with 'living'")
             posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
-            cache.get("living_posts",posts,1800)
+            cache.set("living_posts",posts,1800)
 
         return render(request,'posts.html',
             {'posts':posts,'title':"Living",
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
-            'TITLE':": Living"
+            'TITLE':": Living",
+            'tags':get_tags(posts)
+            })
+
+
+    elif request.method == 'POST':
+        pass
+
+def tag(request,tag):
+    record_ip(request)
+    if request.method == 'GET':
+        name = 'tag_{}'.format(tag.encode('utf8'))
+
+        posts = Post.objects.filter(tags__contains=tag).filter(isPublic__exact=True)
+        posts = posts.order_by('title')
+
+        return render(request,'posts.html',
+            {'posts':posts,'title':"Tag",
+            'subtitle':tag,
+            'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
+            'TITLE':": Tag"
             })
 
 

@@ -20,6 +20,7 @@ from .views import me
 from .views import coding
 from .views import reading
 from .views import living
+from .views import tag
 from .views import post
 from .views import login
 from .views import logout
@@ -39,6 +40,7 @@ urlpatterns = [
     url(r'^coding/?$',coding,name='coding'),
     url(r'^reading/?$',reading),
     url(r'^living/?$',living),
+    url(r'^tag__(?P<tag>.+)(?:\.json)?',tag),
     url(r'^YCNote/post/(?P<pk>\d+)(?:\.json)?',post),
     url(r'^god/login/$',login),
     url(r'^god/admin/$',myadmin),
