@@ -29,7 +29,24 @@
             {{post.content | safe}}
         </div> 
         <div class="post-footer">
+        {% if posts_tag %}
+            {% for tag, posts_ in posts_tag.items %}
+            {% if posts_ %}
+            <h3>Tag: {{tag}}</h3>
+            <ul>
+                {% for post_ in posts_ %}
+                {% if post_.pk == post.pk %}
+                <li>{{post_.title}}</li>
+                {% else %}
+                <li><a href="/YCNote/post/{{post_.pk}}" target="_blank">{{post_.title}}</a></li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endfor %}
+        {% endif %}
 
+        <br/><br/><br/>
         </div>
     </div>
 

@@ -9,6 +9,7 @@
 </div>
 
 <div class="container">
+    {% if tags %}
     <div class="tag_container">
         {% for tag in tags %}
         <div class="posts_tag">
@@ -16,6 +17,7 @@
         </div>
         {% endfor %}  
     </div>
+    {% endif %}
     {% for post in posts %}
     <div id="PostID{{post.pk}}" style="padding-top: 5px;"> </div>
     <div  class="post-wrapper">

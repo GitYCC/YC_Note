@@ -123,6 +123,18 @@ def get_tags(posts):
             if tag!='' and tag not in tags: tags.append(tag)
     return tags
 
+def get_posts_from_tag(tag):
+    name = 'tag_{}'.format(str(tag.encode('utf8')).replace(' ','\s')[2:-1])
+    print(name)
+    posts = cache.get(name)
+    if not posts:
+        logging.warning("recharge cache with '{}'".format(name))
+        posts = Post.objects.filter(tags__contains=tag).filter(isPublic__exact=True)
+        posts = posts.order_by('title')
+        cache.set(name,posts,1800)
+
+    return posts
+
 def coding(request):
     record_ip(request)
 
@@ -136,7 +148,8 @@ def coding(request):
         
 
         return render(request,'posts.html',
-            {'posts':posts,'title':"Coding",
+            {'posts':posts,
+            'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
             'TITLE':": Coding",
@@ -194,10 +207,8 @@ def living(request):
 def tag(request,tag):
     record_ip(request)
     if request.method == 'GET':
-        name = 'tag_{}'.format(tag.encode('utf8'))
 
-        posts = Post.objects.filter(tags__contains=tag).filter(isPublic__exact=True)
-        posts = posts.order_by('title')
+        posts = get_posts_from_tag(tag)
 
         return render(request,'posts.html',
             {'posts':posts,'title':"Tag",
@@ -223,11 +234,18 @@ def post(request,pk):
             elif post.kind == "Living":
                 post.front_board = "https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg"
 
+        if post.tags:
+            posts_tag = {tag: get_posts_from_tag(tag) for tag in post.tags.split(',')}
+
+
         if not post:
             return Http404
         else:
             return render(request,'post.html',
-                {'post':post, 'TITLE':": "+str(post.title)})
+                {'post':post, 
+                 'TITLE':": "+str(post.title),
+                 'posts_tag':posts_tag
+                 })
 
 
     elif request.method == 'POST':
