@@ -183,11 +183,11 @@ def coding(request,page=None):
             cache.set("coding_posts",posts,1800)
         
 
-        posts, page_info = get_page_info(posts=posts,page=page,main='/coding/')
+        show_posts, page_info = get_page_info(posts=posts,page=page,main='/coding/')
 
 
         return render(request,'posts.html',
-            {'posts':posts,
+            {'posts':show_posts,
             'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
@@ -211,10 +211,11 @@ def reading(request,page=None):
             posts = posts.order_by('-post_time')
             cache.set("reading_posts",posts,1800)
 
-        posts, page_info = get_page_info(posts=posts,page=page,main='/reading/')
+        show_posts, page_info = get_page_info(posts=posts,page=page,main='/reading/')
 
         return render(request,'posts.html',
-            {'posts':posts,'title':"Reading",
+            {'posts':show_posts,
+            'title':"Reading",
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
             'TITLE':": Reading",
@@ -236,10 +237,11 @@ def living(request,page=None):
             posts = posts.order_by('-post_time')
             cache.set("living_posts",posts,1800)
 
-        posts, page_info = get_page_info(posts=posts,page=page,main='/living/')
+        show_posts, page_info = get_page_info(posts=posts,page=page,main='/living/')
 
         return render(request,'posts.html',
-            {'posts':posts,'title':"Living",
+            {'posts':show_posts,
+            'title':"Living",
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
             'TITLE':": Living",
@@ -259,10 +261,11 @@ def tag(request,tag,page=None):
 
         if len(posts)==0: raise Http404
         
-        posts, page_info = get_page_info(posts=posts,page=page,main='/tag__{}/'.format(tag))
+        show_posts, page_info = get_page_info(posts=posts,page=page,main='/tag__{}/'.format(tag))
 
         return render(request,'posts.html',
-            {'posts':posts,'title':"Tag",
+            {'posts':show_posts,
+            'title':"Tag",
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
             'TITLE':": Tag",
