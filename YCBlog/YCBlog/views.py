@@ -289,8 +289,11 @@ def post(request,pk):
             elif post.kind == "Living":
                 post.front_board = "https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg"
 
+
         if post.tags:
             posts_tag = {tag: get_posts_from_tag(tag) for tag in post.tags.split(',')}
+        else:
+            posts_tag = None
 
 
         if not post: raise Http404
