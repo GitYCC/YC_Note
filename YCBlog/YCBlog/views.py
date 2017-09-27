@@ -8,7 +8,7 @@ from Posts.models import Post
 from Accounts.models import Account
 from django.middleware.csrf import get_token
 
-import pprint, re, datetime, logging, os
+import pprint, re, datetime, logging, os, math
 from YCBlog import settings
 
 from django.core.cache import cache
@@ -125,17 +125,53 @@ def get_tags(posts):
 
 def get_posts_from_tag(tag):
     name = 'tag_{}'.format(str(tag.encode('utf8')).replace(' ','\s')[2:-1])
-    print(name)
+
     posts = cache.get(name)
     if not posts:
         logging.warning("recharge cache with '{}'".format(name))
         posts = Post.objects.filter(tags__contains=tag).filter(isPublic__exact=True)
-        posts = posts.order_by('title')
+        posts = posts.order_by('title').all()  
+        posts = list(filter(lambda x: tag in x.tags.split(","),posts))
         cache.set(name,posts,1800)
 
     return posts
 
-def coding(request):
+def get_page_info(posts,page,main):
+    page_info = {}
+    if not page: 
+        page = 1
+    else:
+        page = int(page)
+        
+    if page < 1: raise Http404
+
+    PAGE_MAX_POSTS = 5
+    max_page = max([1,math.ceil(len(posts)*1.0/PAGE_MAX_POSTS)])
+    if page > max_page: raise Http404
+
+
+    all_page = []
+    i = 0
+    j = page - 2
+    while(i<5 and j<=max_page):
+        if j <= 0:
+            j += 1
+        else:
+            all_page.append(j)
+            i += 1 
+            j += 1
+
+    posts = posts[(page-1)*PAGE_MAX_POSTS : min([page*PAGE_MAX_POSTS,len(posts)])]
+
+
+    page_info['now_page'] = page
+    page_info['max_page'] = max_page
+    page_info['all_page'] = all_page
+    page_info['main'] = main 
+
+    return posts, page_info
+
+def coding(request,page=None):
     record_ip(request)
 
     if request.method == 'GET':
@@ -147,20 +183,25 @@ def coding(request):
             cache.set("coding_posts",posts,1800)
         
 
+        posts, page_info = get_page_info(posts=posts,page=page,main='/coding/')
+
+
         return render(request,'posts.html',
             {'posts':posts,
             'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
             'TITLE':": Coding",
-            'tags':get_tags(posts)
+            'tags':get_tags(posts),
+            'page_info':page_info,
+
             })
 
 
     elif request.method == 'POST':
         pass
 
-def reading(request):
+def reading(request,page=None):
     record_ip(request)
     if request.method == 'GET':
         posts = cache.get('reading_posts')
@@ -170,19 +211,22 @@ def reading(request):
             posts = posts.order_by('-post_time')
             cache.set("reading_posts",posts,1800)
 
+        posts, page_info = get_page_info(posts=posts,page=page,main='/reading/')
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Reading",
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
             'TITLE':": Reading",
-            'tags':get_tags(posts)
+            'tags':get_tags(posts),
+            'page_info':page_info,
             })
 
 
     elif request.method == 'POST':
         pass
 
-def living(request):
+def living(request,page=None):
     record_ip(request)
     if request.method == 'GET':
         posts = cache.get('living_posts')
@@ -192,29 +236,37 @@ def living(request):
             posts = posts.order_by('-post_time')
             cache.set("living_posts",posts,1800)
 
+        posts, page_info = get_page_info(posts=posts,page=page,main='/living/')
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Living",
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
             'TITLE':": Living",
-            'tags':get_tags(posts)
+            'tags':get_tags(posts),
+            'page_info':page_info,
             })
 
 
     elif request.method == 'POST':
         pass
 
-def tag(request,tag):
+def tag(request,tag,page=None):
     record_ip(request)
     if request.method == 'GET':
 
         posts = get_posts_from_tag(tag)
 
+        if len(posts)==0: raise Http404
+        
+        posts, page_info = get_page_info(posts=posts,page=page,main='/tag__{}/'.format(tag))
+
         return render(request,'posts.html',
             {'posts':posts,'title':"Tag",
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
-            'TITLE':": Tag"
+            'TITLE':": Tag",
+            'page_info':page_info,
             })
 
 
@@ -238,10 +290,9 @@ def post(request,pk):
             posts_tag = {tag: get_posts_from_tag(tag) for tag in post.tags.split(',')}
 
 
-        if not post:
-            return Http404
-        else:
-            return render(request,'post.html',
+        if not post: raise Http404
+
+        return render(request,'post.html',
                 {'post':post, 
                  'TITLE':": "+str(post.title),
                  'posts_tag':posts_tag

@@ -48,6 +48,28 @@
         </div>
     </div>
     {% endfor %}
+
+    <div class="num_container">
+        <div class="posts_num">
+            <a href="{{page_info.main}}1"><<</a>
+        </div>
+
+        {% for i in page_info.all_page %}
+        {% if i == page_info.now_page %}
+        <div class="posts_num">
+            <a href="">Now</a>
+        </div>
+        {% else %}
+        <div class="posts_num">
+            <a href="{{page_info.main}}{{i}}">{{i}}</a>
+        </div>
+        {% endif %}
+        {% endfor %}
+
+        <div class="posts_num" style="float:right;">
+            <a href="{{page_info.main}}{{page_info.max_page}}">>></a>
+        </div>        
+    </div>
 </div>
 {% endblock %}
 
