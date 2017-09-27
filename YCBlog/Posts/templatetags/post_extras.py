@@ -19,6 +19,15 @@ def spacify(value, autoescape=None):
 
 spacify.needs_autoescape = True
 
+def cut_post_content(value):
+    string_list = value.split('</p>')
+
+    string_list = string_list[0:min(5,len(string_list))]
+
+    value = '</p>'.join(string_list)+'</p>'
+    
+    return value
 
 
 register.filter('spacify',spacify)
+register.filter('cut_post_content',cut_post_content)
