@@ -290,7 +290,7 @@ def get_post_description(post_content):
     value = '</p>'.join(string_list)+'</p>'
 
     value = value.replace("\n","").replace("\t"," ")
-    value = re.sub(r'<[^>\n]+/\s*>','',value, flags=re.MULTILINE)
+    value = re.sub(r'<\s*img[^>\n]+/\s*>','',value, flags=re.MULTILINE)
     value = re.sub(r'<[^>\n]+>','',value, flags=re.MULTILINE)
 
     
