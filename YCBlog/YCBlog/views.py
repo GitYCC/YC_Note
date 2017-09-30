@@ -77,7 +77,7 @@ def welcome(request):
         all_tag = cache.get('all_tag')
         if not recent_posts or not all_tag:
             logging.warning("recharge cache with 'recent'")
-            posts = Post.objects.filter(isPublic__exact=True)
+            posts = Post.objects.exclude(kind__contains="Me").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
 
             recent_posts = posts[0:min(max_files,len(posts))]
