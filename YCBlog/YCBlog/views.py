@@ -282,7 +282,7 @@ def tag(request,tag,page=None):
 def get_post_description(post_content):
     string_list = post_content.split('</p>')
 
-    string_list = string_list[min(0,len(string_list)):min(1,len(string_list))]
+    string_list = string_list[min(0,len(string_list)):min(3,len(string_list))]
 
     value = '</p>'.join(string_list)+'</p>'
 
