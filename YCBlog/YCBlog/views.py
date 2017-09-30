@@ -71,34 +71,24 @@ def log(request):
 def welcome(request):
     record_ip(request)
     if request.method == 'GET':
-        max_files = 7
+        max_files = 10
 
-        posts = cache.get('coding_posts')
-        if not posts:
-            logging.warning("recharge cache with 'coding'")
-            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
+        recent_posts = cache.get('recent_posts')
+        all_tag = cache.get('all_tag')
+        if not recent_posts or not all_tag:
+            logging.warning("recharge cache with 'recent'")
+            posts = Post.objects.filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
-            cache.set("coding_posts",posts,1800)
-        coding_tops = posts[0:min(max_files,len(posts))]
 
-        posts = cache.get('reading_posts')
-        if not posts:
-            logging.warning("recharge cache with 'reading'")
-            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("reading_posts",posts,1800)
-        reading_tops = posts[0:min(max_files,len(posts))]
+            recent_posts = posts[0:min(max_files,len(posts))]
+            all_tag = get_tags(posts)
 
-        posts = cache.get('living_posts')
-        if not posts:
-            logging.warning("recharge cache with 'living'")
-            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.get("living_posts",posts,1800)
-        living_tops = posts[0:min(max_files,len(posts))]
+            cache.set("recent_posts",recent_posts,1800)
+            cache.set("all_tag",all_tag,1800)
+        
 
-        return render(request,'welcome.html',{'coding_tops':coding_tops,'reading_tops':reading_tops,
-                                            'living_tops':living_tops,'TITLE':""})
+        return render(request,'welcome.html',{'recent_posts':recent_posts,
+                                              'all_tag':all_tag})
 
 
     elif request.method == 'POST':

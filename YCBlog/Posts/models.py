@@ -48,10 +48,5 @@ class Post(models.Model):
             self.content = html
     
     def _refresh_memcached(self):
-        if self.kind == "Coding":
-            cache.delete("coding_posts")
-        elif self.kind == "Reading":
-            cache.delete("reading_posts")
-        elif self.kind == "Living":
-            cache.delete("living_posts")
+        cache._cache.flush_all()
 
