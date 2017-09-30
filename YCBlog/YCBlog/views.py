@@ -89,7 +89,10 @@ def welcome(request):
 
         return render(request,'welcome.html',{'recent_posts':recent_posts,
                                               'all_tag':all_tag,
-                                              'TITLE': "YC Note: 一起來學機器學習"})
+                                              'TITLE': "YC Note: 一起來學機器學習",
+                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)、資料科學(Date Science)、Python、演算法(Algorithm)。",
+
+                                              })
 
 
     elif request.method == 'POST':
@@ -101,7 +104,9 @@ def me(request):
     record_ip(request)
     if request.method == 'GET':
         me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
-        return render(request,'me.html',{'post':me_post,'TITLE':"About Me"})
+        return render(request,'me.html',{'post':me_post,
+                                        'TITLE':"About Me",
+                                        'DESCRIPTION':me_post.content})
 
 
     elif request.method == 'POST':
@@ -183,6 +188,7 @@ def coding(request,page=None):
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
             'TITLE':"Coding: Mechine Learning, Algorithm, Python",
+            'DESCRIPTION':"機器學習(Mechine Learning), 演算法(Algorithm), Python | {}".format(",".join([post.title for post in show_posts])),
             'tags':get_tags(posts),
             'page_info':page_info,
 
@@ -210,6 +216,7 @@ def reading(request,page=None):
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
             'TITLE':"Reading: Be a Scientist",
+            'DESCRIPTION':"我的讀書分享筆記 | {}".format(",".join([post.title for post in show_posts])),
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -236,6 +243,7 @@ def living(request,page=None):
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
             'TITLE':"Living: My Life is Brilliant",
+            'DESCRIPTION':"我的生活記趣 | {}".format(",".join([post.title for post in show_posts])),
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -260,12 +268,22 @@ def tag(request,tag,page=None):
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
             'TITLE':"Tag: {}".format(tag),
+            'DESCRIPTION':"{} | {}".format(tag,",".join([post.title for post in show_posts])),
             'page_info':page_info,
             })
 
 
     elif request.method == 'POST':
         pass
+
+def get_post_description(post_content):
+    string_list = post_content.split('</p>')
+
+    string_list = string_list[min(0,len(string_list)):min(1,len(string_list))]
+
+    value = '</p>'.join(string_list)+'</p>'
+    
+    return value
 
 def post(request,pk):
     record_ip(request)
@@ -292,7 +310,9 @@ def post(request,pk):
         return render(request,'post.html',
                 {'post':post, 
                  'TITLE':"{}".format(str(post.title)),
-                 'posts_tag':posts_tag
+                 'DESCRIPTION':str(get_post_description(post.content)),
+                 'posts_tag':posts_tag,
+
                  })
 
 
