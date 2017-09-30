@@ -100,7 +100,7 @@ def me(request):
     record_ip(request)
     if request.method == 'GET':
         me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
-        return render(request,'me.html',{'post':me_post,'TITLE':": About Me"})
+        return render(request,'me.html',{'post':me_post,'TITLE':"About Me"})
 
 
     elif request.method == 'POST':
@@ -181,7 +181,7 @@ def coding(request,page=None):
             'title':"Coding",
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
-            'TITLE':": Coding",
+            'TITLE':"Coding: Mechine Learning, Algorithm, Python",
             'tags':get_tags(posts),
             'page_info':page_info,
 
@@ -208,7 +208,7 @@ def reading(request,page=None):
             'title':"Reading",
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
-            'TITLE':": Reading",
+            'TITLE':"Reading: Be a Scientist",
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -234,7 +234,7 @@ def living(request,page=None):
             'title':"Living",
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
-            'TITLE':": Living",
+            'TITLE':"Living: My Life is Brilliant",
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -258,7 +258,7 @@ def tag(request,tag,page=None):
             'title':"Tag",
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
-            'TITLE':": Tag",
+            'TITLE':"Tag: {}".format(tag),
             'page_info':page_info,
             })
 
@@ -290,7 +290,7 @@ def post(request,pk):
 
         return render(request,'post.html',
                 {'post':post, 
-                 'TITLE':": "+str(post.title),
+                 'TITLE':"{}".format(str(post.title)),
                  'posts_tag':posts_tag
                  })
 
