@@ -27,9 +27,8 @@
         近期文章
     </h2>
     {% for post in recent_posts %}
-    <h4>
-        <strong>{{post.kind}}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/YCNote/post/{{post.pk}}">{{post.title}}</a>
-    </h4>
+    <h5 style="margin-bottom:5px;text-decoration: underline;">{{post.kind}}</h5>
+    <h4 style="margin-top:5px;">&nbsp;<a href="/YCNote/post/{{post.pk}}">{{post.title}}</a></h4>
     {% endfor %}
 
 
