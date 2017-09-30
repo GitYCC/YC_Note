@@ -29,6 +29,7 @@
     {% for post in recent_posts %}
     <h5 style="margin-bottom:5px;text-decoration: underline;">{{post.kind}}</h5>
     <h4 style="margin-top:5px;">&nbsp;<a href="/YCNote/post/{{post.pk}}">{{post.title}}</a></h4>
+    <div style="visibility: hidden;overflow: hidden;height: 0;">{{post.content}}</div>
     {% endfor %}
 
 

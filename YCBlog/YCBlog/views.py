@@ -71,7 +71,7 @@ def log(request):
 def welcome(request):
     record_ip(request)
     if request.method == 'GET':
-        max_files = 10
+        max_files = 15
 
         recent_posts = cache.get('recent_posts')
         all_tag = cache.get('all_tag')
