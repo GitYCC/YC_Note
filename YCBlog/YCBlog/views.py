@@ -88,7 +88,8 @@ def welcome(request):
         
 
         return render(request,'welcome.html',{'recent_posts':recent_posts,
-                                              'all_tag':all_tag})
+                                              'all_tag':all_tag,
+                                              'TITLE': "YC Note: 一起來學機器學習"})
 
 
     elif request.method == 'POST':
