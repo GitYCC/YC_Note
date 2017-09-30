@@ -90,7 +90,8 @@ def welcome(request):
         return render(request,'welcome.html',{'recent_posts':recent_posts,
                                               'all_tag':all_tag,
                                               'TITLE': "YC Note: 一起來學機器學習",
-                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)、資料科學(Date Science)、Python、演算法(Algorithm)。 | {} ".format(", ".join([tag for tag in all_tag])),
+                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)"
+                                                            "、資料科學(Date Science)、Python、演算法(Algorithm)。 | {} | {}".format(", ".join([tag for tag in all_tag]),get_posts_title_list(recent_posts)),
 
                                               })
 
