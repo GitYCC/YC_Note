@@ -99,6 +99,8 @@ def welcome(request):
     elif request.method == 'POST':
         pass
 
+def redirect_welcome(request):
+    return redirect('/')
 
 def me(request):
 
@@ -287,7 +289,9 @@ def get_post_description(post_content):
 
     value = '</p>'.join(string_list)+'</p>'
 
+    value = value.replace("\n","").replace("\t"," ")
     value = re.sub(r'<[^>\n]+>','',value, flags=re.MULTILINE)
+
     
     return value
 

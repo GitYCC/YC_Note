@@ -16,6 +16,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from .views import welcome
+from .views import redirect_welcome
 from .views import me
 from .views import coding
 from .views import reading
@@ -36,6 +37,8 @@ from .views import google_console
 urlpatterns = [
     #url(r'^god/mode/', include(admin.site.urls)),
     url(r'^$', welcome),
+    url(r'^YCNote/post/?$',redirect_welcome),
+    url(r'^YCNote/?$',redirect_welcome),
     url(r'^me/?$',me),
     url(r'^coding/(?P<page>\d+)?',coding,name='coding'),
     url(r'^reading/(?P<page>\d+)?',reading),
