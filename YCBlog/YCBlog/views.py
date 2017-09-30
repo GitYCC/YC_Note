@@ -106,7 +106,7 @@ def me(request):
         me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
         return render(request,'me.html',{'post':me_post,
                                         'TITLE':"About Me",
-                                        'DESCRIPTION':me_post.content})
+                                        'DESCRIPTION':"你好，我是YC"})
 
 
     elif request.method == 'POST':
