@@ -90,7 +90,7 @@ def welcome(request):
         return render(request,'welcome.html',{'recent_posts':recent_posts,
                                               'all_tag':all_tag,
                                               'TITLE': "YC Note: 一起來學機器學習",
-                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)、資料科學(Date Science)、Python、演算法(Algorithm)。",
+                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)、資料科學(Date Science)、Python、演算法(Algorithm)。 | {} ".format(", ".join([tag for tag in all_tag])),
 
                                               })
 
@@ -167,6 +167,9 @@ def get_page_info(posts,page,main):
 
     return posts, page_info
 
+def get_posts_title_list(posts):
+    return ", ".join([post.title for post in posts])
+
 def coding(request,page=None):
     record_ip(request)
 
@@ -188,7 +191,7 @@ def coding(request,page=None):
             'subtitle':"Mechine Learning | Algorithm | Python",
             'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
             'TITLE':"Coding: Mechine Learning, Algorithm, Python",
-            'DESCRIPTION':"機器學習(Mechine Learning), 演算法(Algorithm), Python | {}".format(",".join([post.title for post in show_posts])),
+            'DESCRIPTION':"機器學習(Mechine Learning), 演算法(Algorithm), Python | {}".format(get_posts_title_list(show_posts)),
             'tags':get_tags(posts),
             'page_info':page_info,
 
@@ -216,7 +219,7 @@ def reading(request,page=None):
             'subtitle':"Be a Scientist",
             'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
             'TITLE':"Reading: Be a Scientist",
-            'DESCRIPTION':"我的讀書分享筆記 | {}".format(",".join([post.title for post in show_posts])),
+            'DESCRIPTION':"我的讀書分享筆記 | {}".format(get_posts_title_list(show_posts)),
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -243,7 +246,7 @@ def living(request,page=None):
             'subtitle':"My Life is Brilliant",
             'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
             'TITLE':"Living: My Life is Brilliant",
-            'DESCRIPTION':"我的生活記趣 | {}".format(",".join([post.title for post in show_posts])),
+            'DESCRIPTION':"我的生活記趣 | {}".format(", ".join([post.title for post in show_posts])),
             'tags':get_tags(posts),
             'page_info':page_info,
             })
@@ -268,7 +271,7 @@ def tag(request,tag,page=None):
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
             'TITLE':"Tag: {}".format(tag),
-            'DESCRIPTION':"{} | {}".format(tag,",".join([post.title for post in show_posts])),
+            'DESCRIPTION':"{} | {}".format(tag,get_posts_title_list(show_posts)),
             'page_info':page_info,
             })
 
@@ -282,6 +285,8 @@ def get_post_description(post_content):
     string_list = string_list[min(0,len(string_list)):min(1,len(string_list))]
 
     value = '</p>'.join(string_list)+'</p>'
+
+    value = re.sub(r'<[^>\n]+>','',value, flags=re.MULTILINE)
     
     return value
 
