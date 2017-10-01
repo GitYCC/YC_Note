@@ -68,14 +68,77 @@ def log(request):
 
 
 
+def sitemap(request):
+
+    if request.method == 'GET':
+        new_post = {}
+        collect = {}
+
+        new_post['all'] = cache.get('recent_posts')[0]
+        collect['tags'] = cache.get('all_tag')
+        if not new_post['all'] or not collect['tags']:
+            max_files = 15
+            logging.warning("recharge cache with 'recent'")
+            posts = Post.objects.exclude(kind__contains="Me").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+
+            recent_posts = posts[0:min(max_files,len(posts))]
+            all_tag = get_tags(posts)
+
+            cache.set("recent_posts",recent_posts,1800)
+            cache.set("all_tag",all_tag,1800)
+
+            new_post['all'] = cache.get('recent_posts')[0]
+            collect['tags'] = cache.get('all_tag')
+
+        posts = cache.get('coding_posts')
+        if not posts:
+            logging.warning("recharge cache with 'coding'")
+            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("coding_posts",posts,1800)
+
+        new_post['coding'] = posts[0]
+        collect['coding']  = posts
+
+        posts = cache.get('reading_posts')
+        if not posts:
+            logging.warning("recharge cache with 'reading'")
+            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("reading_posts",posts,1800)
+
+        new_post['reading'] = posts[0]
+        collect['reading']  = posts        
+        
+        posts = cache.get('living_posts')
+        if not posts:
+            logging.warning("recharge cache with 'living'")
+            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
+            posts = posts.order_by('-post_time')
+            cache.set("living_posts",posts,1800)        
+
+        new_post['living'] = posts[0]
+        collect['living']  = posts   
+
+        return render(request,'sitemap.xml',
+            {'new_post':new_post,
+             'collect':collect,
+            })
+
+    elif request.method == 'POST':
+        pass
+
+
 def welcome(request):
     record_ip(request)
     if request.method == 'GET':
-        max_files = 15
+        
 
         recent_posts = cache.get('recent_posts')
         all_tag = cache.get('all_tag')
         if not recent_posts or not all_tag:
+            max_files = 15
             logging.warning("recharge cache with 'recent'")
             posts = Post.objects.exclude(kind__contains="Me").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
