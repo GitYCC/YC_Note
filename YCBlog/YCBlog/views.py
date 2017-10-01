@@ -67,6 +67,11 @@ def log(request):
     return HttpResponse(output)
 
 
+def robots(request):
+    if request.method == 'GET':  
+        return render(request,"robots.txt")
+    elif request.method == 'POST':
+        pass
 
 def sitemap(request):
 

@@ -1,0 +1,13 @@
+# robots.txt for http://www.ycc.idv.tw
+
+User-agent: *
+
+
+#User-agent: Baiduspider
+
+
+#User-agent: HaoSouSpider
+
+
+Sitemap: http://www.ycc.idv.tw/sitemap.xml
+

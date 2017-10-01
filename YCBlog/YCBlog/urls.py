@@ -16,6 +16,7 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from .views import sitemap
+from .views import robots
 from .views import welcome
 from .views import redirect_welcome
 from .views import me
@@ -38,6 +39,7 @@ from .views import google_console
 urlpatterns = [
     #url(r'^god/mode/', include(admin.site.urls)),
     url(r'^sitemap.xml$', sitemap),
+    url(r'^robots.txt$', robots),
     url(r'^$', welcome),
     url(r'^YCNote/post/?$',redirect_welcome),
     url(r'^YCNote/?$',redirect_welcome),
