@@ -98,8 +98,8 @@ def sitemap(request):
             posts = posts.order_by('-post_time')
             cache.set("coding_posts",posts,1800)
 
-        new_post['coding'] = posts[0]
-        collect['coding']  = posts
+        new_post['coding'] = posts[0] if posts else dict()
+        collect['coding']  = posts if posts else dict()
 
         posts = cache.get('reading_posts')
         if not posts:
@@ -108,8 +108,8 @@ def sitemap(request):
             posts = posts.order_by('-post_time')
             cache.set("reading_posts",posts,1800)
 
-        new_post['reading'] = posts[0]
-        collect['reading']  = posts        
+        new_post['reading'] = posts[0] if posts else dict()
+        collect['reading']  = posts if posts else dict()
         
         posts = cache.get('living_posts')
         if not posts:
@@ -118,8 +118,8 @@ def sitemap(request):
             posts = posts.order_by('-post_time')
             cache.set("living_posts",posts,1800)        
 
-        new_post['living'] = posts[0]
-        collect['living']  = posts   
+        new_post['living'] = posts[0] if posts else dict()
+        collect['living']  = posts if posts else dict()
 
         return render(request,'sitemap.xml',
             {'new_post':new_post,
