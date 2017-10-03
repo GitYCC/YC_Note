@@ -387,8 +387,8 @@ def post(request,pk):
 
         if not post: raise Http404
 
-        request = get_token(request)
         
+
         return render(request,'post.html',
                 {'post':post, 
                  'TITLE':"{}".format(str(post.title)),

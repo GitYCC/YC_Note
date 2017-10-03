@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['www.ycc.idv.tw','http://www.ycc.idv.tw','127.0.0.1']
 
+DISQUS_API_KEY = 'dfsafvmIJlfdjI;qwJlvij8023lvcsdvr'
+DISQUS_WEBSITE_SHORTNAME = 'https://ycnote.disqus.com'
 
 # Application definition
 
@@ -40,6 +42,7 @@ INSTALLED_APPS = (
     'Posts',
     'Posts.templatetags',
     'Accounts',
+    'disqus',
 )
 
 MIDDLEWARE_CLASSES = (
