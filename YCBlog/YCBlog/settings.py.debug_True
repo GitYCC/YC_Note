@@ -27,8 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['www.ycc.idv.tw','http://www.ycc.idv.tw','127.0.0.1']
 
-DISQUS_API_KEY = 'dfsafvmIJlfdjI;qwJlvij8023lvcsdvr'
-DISQUS_WEBSITE_SHORTNAME = 'https://ycnote.disqus.com'
+DISQUS_API_KEY = '3lNZGZqBIwZ5CCuN1WRkDSvR99WV6eq0T0DFIPQ56IfEsJ0V86CEzkQAtMlw9ZyK'
+DISQUS_WEBSITE_SHORTNAME = 'ycnote'
 
 # Application definition
 
