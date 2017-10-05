@@ -187,7 +187,7 @@ def get_tags(posts):
     tags = []
     for post in posts:
         for tag in post.tags.split(','):
-            if tag!='' and tag not in tags: tags.append(tag)
+            if tag!='' and tag not in tags: tags.insert(0,tag)
     return tags
 
 def get_posts_from_tag(tag):

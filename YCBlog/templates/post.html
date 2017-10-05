@@ -23,6 +23,11 @@
                 <span class="author">
                     Author: {{post.author}}&nbsp;
                 </span>
+                {% if posts_tag %}
+                <span class="info_tag">
+                    Tag: {% for tag, posts_ in posts_tag.items %}<a href="/tag__{{tag}}/">{{tag}}</a>, {% endfor %}
+                </span>
+                {% endif %}
             </div>
         </div>
         <div class="post-content">
