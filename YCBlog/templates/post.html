@@ -18,14 +18,14 @@
             </h2>
             <div class="info">
                <span class="date">
-                    Post: {{post.post_time|date:"Y/m/d"}}&nbsp; 
+                    <strong>Post:</strong> {{post.post_time|date:"Y/m/d"}}&nbsp; 
                 </span>
                 <span class="author">
-                    Author: {{post.author}}&nbsp;
+                    <strong>Author:</strong> {{post.author}}&nbsp;
                 </span>
                 {% if posts_tag %}
                 <span class="info_tag">
-                    Tag: {% for tag, posts_ in posts_tag.items %}<a href="/tag__{{tag}}/">{{tag}}</a>, {% endfor %}
+                    <strong>Tag:</strong> {% for tag, posts_ in posts_tag.items %}<a href="/tag__{{tag}}/">{{tag}}</a>, {% endfor %}
                 </span>
                 {% endif %}
             </div>
