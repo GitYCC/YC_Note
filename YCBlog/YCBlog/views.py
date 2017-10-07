@@ -406,9 +406,9 @@ def myadmin(request):
         username = Account.checkHashUsername(request.COOKIES['si-um-zr'])
         posts = Post.objects.all()
 
-        SETTING = get_setting()
+
         return render(request,'admin.html',
-            {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+            {
             "username":username,"posts":posts})
         
 
