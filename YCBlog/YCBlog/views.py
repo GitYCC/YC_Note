@@ -13,12 +13,13 @@ from YCBlog import settings
 
 from django.core.cache import cache
 
-
-SETTING = cache.get('SETTING')
-if not SETTING:
-    SETTING = eval('{'+str(Post.objects.filter(kind__contains="Setting")[0].content.replace('\n',''))+'}')
-    cache.set("SETTING",SETTING,1800)
-pprint.pprint(SETTING)
+def get_setting():
+    SETTING = cache.get('SETTING')
+    if not SETTING:
+        SETTING = eval('{'+str(Post.objects.filter(kind__contains="Setting")[0].content.replace('\n',''))+'}')
+        cache.set("SETTING",SETTING,1800)
+    #pprint.pprint(SETTING)
+    return SETTING
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -127,7 +128,7 @@ def welcome(request):
             cache.set("recent_posts",recent_posts,1800)
             cache.set("all_tag",all_tag,1800)
         
-
+        SETTING = get_setting()
         return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title']) for kind in SETTING['Kind_List']],
                                               'recent_posts':recent_posts,
                                               'all_tag':all_tag,
@@ -156,7 +157,9 @@ def redirect_welcome(request):
 def me(request):
 
     record_ip(request)
+
     if request.method == 'GET':
+        SETTING = get_setting()
         me_post = Post.objects.filter(kind__contains=SETTING['Me']['name']).filter(isPublic__exact=True)[0]
         return render(request,'me.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
                                         'post':me_post,
@@ -235,6 +238,8 @@ def render_kind(request,page=None,kind=None):
 
     kind_title = kind.title()
     kind_low = kind.lower()
+    
+    SETTING = get_setting()
 
     if kind_title not in SETTING['Kind'].keys(): raise Http404
 
@@ -278,6 +283,7 @@ def tag(request,tag,page=None):
         
         show_posts, page_info = get_page_info(posts=posts,page=page,main='/tag__{}/'.format(tag))
 
+        SETTING = get_setting()
         return render(request,'posts.html',
             {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
             'posts':show_posts,
@@ -331,7 +337,7 @@ def post(request,pk):
         if not post: raise Http404
 
         
-
+        SETTING = get_setting()
         return render(request,'post.html',
                 {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
                 'post':post, 
@@ -359,6 +365,7 @@ def set_cookie(response, key, value, days_expire = 0.5):
 
 def login(request):
     record_ip(request)
+    SETTING = get_setting()
     if request.method == 'GET':
         return render(request,'login.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],})
     elif request.method == 'POST':
@@ -398,6 +405,8 @@ def myadmin(request):
     if request.method == 'GET':
         username = Account.checkHashUsername(request.COOKIES['si-um-zr'])
         posts = Post.objects.all()
+
+        SETTING = get_setting()
         return render(request,'admin.html',
             {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
             "username":username,"posts":posts})
