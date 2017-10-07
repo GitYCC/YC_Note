@@ -129,7 +129,7 @@ def welcome(request):
             cache.set("all_tag",all_tag,1800)
         
         SETTING = get_setting()
-        return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title']) for kind in SETTING['Kind_List']],
+        return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title']) if kind in SETTING['Kind'].keys() for kind in SETTING['Kind_List']],
                                               'recent_posts':recent_posts,
                                               'all_tag':all_tag,
                                               'TITLE': SETTING['Index']['page_TITLE'],
