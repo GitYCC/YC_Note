@@ -13,6 +13,13 @@ from YCBlog import settings
 
 from django.core.cache import cache
 
+
+SETTING = cache.get('SETTING')
+if not SETTING:
+    SETTING = eval('{'+str(Post.objects.filter(kind__contains="Setting")[0].content.replace('\n',''))+'}')
+    cache.set("SETTING",SETTING,1800)
+
+
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -76,60 +83,26 @@ def robots(request):
 def sitemap(request):
 
     if request.method == 'GET':
-        new_post = {}
-        collect = {}
 
-        new_post['all'] = cache.get('recent_posts')[0]
-        collect['tags'] = cache.get('all_tag')
-        if not new_post['all'] or not collect['tags']:
-            max_files = 15
-            logging.warning("recharge cache with 'recent'")
+        tags = cache.get('all_tags')
+        posts = cache.get('all_posts')
+        if not tags or not posts:
+            logging.warning("recharge cache with 'sitemap'")
             posts = Post.objects.exclude(kind__contains="Me").filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
 
-            recent_posts = posts[0:min(max_files,len(posts))]
-            all_tag = get_tags(posts)
+            tags = get_tags(posts)
 
-            cache.set("recent_posts",recent_posts,1800)
-            cache.set("all_tag",all_tag,1800)
+            cache.set("all_posts",posts,1800)
+            cache.set("all_tags",tags,1800)
 
-            new_post['all'] = cache.get('recent_posts')[0]
-            collect['tags'] = cache.get('all_tag')
 
-        posts = cache.get('coding_posts')
-        if not posts:
-            logging.warning("recharge cache with 'coding'")
-            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("coding_posts",posts,1800)
-
-        new_post['coding'] = posts[0] if posts else dict()
-        collect['coding']  = posts if posts else dict()
-
-        posts = cache.get('reading_posts')
-        if not posts:
-            logging.warning("recharge cache with 'reading'")
-            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("reading_posts",posts,1800)
-
-        new_post['reading'] = posts[0] if posts else dict()
-        collect['reading']  = posts if posts else dict()
         
-        posts = cache.get('living_posts')
-        if not posts:
-            logging.warning("recharge cache with 'living'")
-            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("living_posts",posts,1800)        
-
-        new_post['living'] = posts[0] if posts else dict()
-        collect['living']  = posts if posts else dict()
-
         return render(request,'sitemap.xml',
-            {'new_post':new_post,
-             'collect':collect,
+            {'posts':posts,
+             'tags':tags,
             })
+     
 
     elif request.method == 'POST':
         pass
@@ -155,11 +128,16 @@ def welcome(request):
             cache.set("all_tag",all_tag,1800)
         
 
-        return render(request,'welcome.html',{'recent_posts':recent_posts,
+        return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+                                              'recent_posts':recent_posts,
                                               'all_tag':all_tag,
-                                              'TITLE': "YC Note: 一起來學機器學習",
-                                              'DESCRIPTION':"本網站內容包括機器學習(Machine Learning)、深度學習(Deep Learning)、類神經網路(Neural Network)"
-                                                            "、資料科學(Date Science)、Python、演算法(Algorithm)。 | {} | {}".format(", ".join([tag for tag in all_tag]),get_posts_title_list(recent_posts)),
+                                              'TITLE': SETTING['Index']['page_TITLE'],
+                                              'DESCRIPTION':"{} | {} | {}".format(SETTING['Index']['page_DESCRIPTION'],
+                                                        ", ".join([tag for tag in all_tag]),
+                                                        get_posts_title_list(recent_posts)),
+                                              'title':SETTING['Index']['page_title'],
+                                              'subtitle':SETTING['Index']['page_subtitle'],
+                                              'pic':SETTING['Index']['page_pic'],
 
                                               })
 
@@ -170,14 +148,24 @@ def welcome(request):
 def redirect_welcome(request):
     return redirect('/')
 
+
+
+
+
+
 def me(request):
 
     record_ip(request)
     if request.method == 'GET':
-        me_post = Post.objects.filter(kind__contains="Me").filter(isPublic__exact=True)[0]
-        return render(request,'me.html',{'post':me_post,
-                                        'TITLE':"About Me",
-                                        'DESCRIPTION':"你好，我是YC"})
+        me_post = Post.objects.filter(kind__contains=SETTING['Me']['name']).filter(isPublic__exact=True)[0]
+        return render(request,'me.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+                                        'post':me_post,
+                                        'TITLE':SETTING['Me']['page_TITLE'],
+                                        'DESCRIPTION':SETTING['Me']['page_DESCRIPTION'],
+                                        'title':SETTING['Me']['page_title'],
+                                        'subtitle':SETTING['Me']['page_subtitle'],
+                                        'pic':SETTING['Me']['page_pic'],
+                                        })
 
 
     elif request.method == 'POST':
@@ -241,85 +229,39 @@ def get_page_info(posts,page,main):
 def get_posts_title_list(posts):
     return ", ".join([post.title for post in posts])
 
-def coding(request,page=None):
+
+def render_kind(request,page=None,kind=None):
     record_ip(request)
 
+    kind_title = kind.title()
+    kind_low = kind.lower()
+
+    if kind_title not in SETTING['Kind'].keys(): raise Http404
+
     if request.method == 'GET':
-        posts = cache.get('coding_posts')
+        cache_name = '{}_posts'.format(kind_low)
+        posts = cache.get(cache_name)
         if not posts:
-            logging.warning("recharge cache with 'coding'")
-            posts = Post.objects.filter(kind__contains="Coding").filter(isPublic__exact=True)
+            logging.warning("recharge cache with '{}'".format(kind_low))
+            posts = Post.objects.filter(kind__contains=SETTING['Kind'][kind_title]['name']).filter(isPublic__exact=True)
             posts = posts.order_by('-post_time')
-            cache.set("coding_posts",posts,1800)
+            cache.set(cache_name,posts,1800)
         
 
-        show_posts, page_info = get_page_info(posts=posts,page=page,main='/coding/')
+        show_posts, page_info = get_page_info(posts=posts,page=page,main='/{}/'.format(kind_low))
 
 
         return render(request,'posts.html',
-            {'posts':show_posts,
-            'title':"Coding",
-            'subtitle':"Mechine Learning | Algorithm | Python",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/21l1n4gii0t50bj/coding_front_board.jpg",
-            'TITLE':"Coding",
-            'DESCRIPTION':"機器學習(Mechine Learning), 演算法(Algorithm), Python | {}".format(get_posts_title_list(show_posts)),
+            {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+            'posts':show_posts,
+            'title':SETTING['Kind'][kind_title]['page_title'],
+            'subtitle':SETTING['Kind'][kind_title]['page_subtitle'],
+            'front_board_img':SETTING['Kind'][kind_title]['page_pic'],
+            'TITLE':SETTING['Kind'][kind_title]['page_TITLE'],
+            'DESCRIPTION':"{} | {}".format(SETTING['Kind'][kind_title]['page_DESCRIPTION'],get_posts_title_list(show_posts)),
             'tags':get_tags(posts),
             'page_info':page_info,
 
-            })
-
-
-    elif request.method == 'POST':
-        pass
-
-def reading(request,page=None):
-    record_ip(request)
-    if request.method == 'GET':
-        posts = cache.get('reading_posts')
-        if not posts:
-            logging.warning("recharge cache with 'reading'")
-            posts = Post.objects.filter(kind__contains="Reading").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("reading_posts",posts,1800)
-
-        show_posts, page_info = get_page_info(posts=posts,page=page,main='/reading/')
-
-        return render(request,'posts.html',
-            {'posts':show_posts,
-            'title':"Reading",
-            'subtitle':"Be a Scientist",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/6g1hdd1e3vak32o/reading_front_board.jpg",
-            'TITLE':"Reading",
-            'DESCRIPTION':"我的讀書分享筆記 | {}".format(get_posts_title_list(show_posts)),
-            'tags':get_tags(posts),
-            'page_info':page_info,
-            })
-
-
-    elif request.method == 'POST':
-        pass
-
-def living(request,page=None):
-    record_ip(request)
-    if request.method == 'GET':
-        posts = cache.get('living_posts')
-        if not posts:
-            logging.warning("recharge cache with 'living'")
-            posts = Post.objects.filter(kind__contains="Living").filter(isPublic__exact=True)
-            posts = posts.order_by('-post_time')
-            cache.set("living_posts",posts,1800)
-
-        show_posts, page_info = get_page_info(posts=posts,page=page,main='/living/')
-
-        return render(request,'posts.html',
-            {'posts':show_posts,
-            'title':"Living",
-            'subtitle':"My Life is Brilliant",
-            'front_board_img':"https://dl.dropboxusercontent.com/s/98tsgzu2pv2j65h/living_front_board.jpg",
-            'TITLE':"Living",
-            'DESCRIPTION':"我的生活記趣 | {}".format(", ".join([post.title for post in show_posts])),
-            'tags':get_tags(posts),
-            'page_info':page_info,
             })
 
 
@@ -337,7 +279,8 @@ def tag(request,tag,page=None):
         show_posts, page_info = get_page_info(posts=posts,page=page,main='/tag__{}/'.format(tag))
 
         return render(request,'posts.html',
-            {'posts':show_posts,
+            {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+            'posts':show_posts,
             'title':"Tag",
             'subtitle':tag,
             'front_board_img':"https://dl.dropboxusercontent.com/s/x8d5iqpf76xy4xv/watercolor-580689_1280.jpg",
@@ -390,7 +333,8 @@ def post(request,pk):
         
 
         return render(request,'post.html',
-                {'post':post, 
+                {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+                'post':post, 
                  'TITLE':"{}".format(str(post.title)),
                  'DESCRIPTION':str(get_post_description(post.content)),
                  'posts_tag':posts_tag,
@@ -416,7 +360,7 @@ def set_cookie(response, key, value, days_expire = 0.5):
 def login(request):
     record_ip(request)
     if request.method == 'GET':
-        return render(request,'login.html',{})
+        return render(request,'login.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],})
     elif request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -430,7 +374,9 @@ def login(request):
                     return set_cookie(response,'si-um-zr', username_cookie)
                 
 
-        return render(request,'login.html',{'err':"wrong user or password"})
+        return render(request,'login.html',
+            {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+            'err':"wrong user or password"})
 
 def logout(request):
     record_ip(request)
@@ -452,7 +398,9 @@ def myadmin(request):
     if request.method == 'GET':
         username = Account.checkHashUsername(request.COOKIES['si-um-zr'])
         posts = Post.objects.all()
-        return render(request,'admin.html',{"username":username,"posts":posts})
+        return render(request,'admin.html',
+            {'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+            "username":username,"posts":posts})
         
 
 def post_edit(request,pk):

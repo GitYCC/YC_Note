@@ -29,5 +29,6 @@ def cut_post_content(value):
     return value
 
 
+
 register.filter('spacify',spacify)
 register.filter('cut_post_content',cut_post_content)

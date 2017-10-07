@@ -2,9 +2,9 @@
 
 {% block content %}
         <div id="front_board">
-            <h1>YC Note</h1>
-            <h2>想像力比知識更重要</h2>
-            <img src="https://dl.dropboxusercontent.com/s/1j910ymg4hnxxqi/welcome_front_board.jpg" alt="front board image" />
+            <h1>{{title}}</h1>
+            <h2>{{subtitle}}</h2>
+            <img src="{{pic}}" alt="front board image" />
         </div>
 
 
@@ -28,7 +28,7 @@
     </h2>
     {% for post in recent_posts %}
     <h5 style="margin-bottom:5px;text-decoration: underline;">{{post.kind}}</h5>
-    <h4 style="margin-top:5px;margin-bottom:5px;">&nbsp;<a href="/YCNote/post/{{post.pk}}">{{post.title}}</a></h4>
+    <h4 style="margin-top:5px;margin-bottom:5px;"><a href="/YCNote/post/{{post.pk}}">{{post.title}}</a></h4>
     <div style="visibility: hidden;overflow: hidden;height: 0;">{{post.content}}</div>
     {% endfor %}
 

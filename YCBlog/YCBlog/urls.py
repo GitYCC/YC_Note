@@ -20,9 +20,6 @@ from .views import robots
 from .views import welcome
 from .views import redirect_welcome
 from .views import me
-from .views import coding
-from .views import reading
-from .views import living
 from .views import tag
 from .views import post
 from .views import login
@@ -34,6 +31,7 @@ from .views import post_preview
 from .views import log
 from .views import flush_cache
 from .views import google_console
+from .views import render_kind
 # TO-DO: from .views import static_handle
 
 urlpatterns = [
@@ -44,9 +42,7 @@ urlpatterns = [
     url(r'^YCNote/post/?$',redirect_welcome),
     url(r'^YCNote/?$',redirect_welcome),
     url(r'^me/?$',me),
-    url(r'^coding/(?P<page>\d+)?',coding,name='coding'),
-    url(r'^reading/(?P<page>\d+)?',reading),
-    url(r'^living/(?P<page>\d+)?',living),
+
     url(r'^tag__(?P<tag>.+)(?:\.json)?/(?P<page>\d+)?',tag),
     url(r'^YCNote/post/(?P<pk>\d+)(?:\.json)?',post),
     url(r'^god/login/$',login),
@@ -58,6 +54,7 @@ urlpatterns = [
     url(r'^god/admin/log/$',log),
     url(r'^god/admin/flush_cache/$',flush_cache),
     url(r'^googleb03eb416eb102f2d.html',google_console),
+    url(r'^(?P<kind>\w+)/(?P<page>\d+)?',render_kind),
     #url(r'^static/(?P<file>\d+)',static_handle)
 
 ]
