@@ -18,7 +18,7 @@ SETTING = cache.get('SETTING')
 if not SETTING:
     SETTING = eval('{'+str(Post.objects.filter(kind__contains="Setting")[0].content.replace('\n',''))+'}')
     cache.set("SETTING",SETTING,1800)
-
+pprint.pprint(SETTING)
 
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -128,7 +128,7 @@ def welcome(request):
             cache.set("all_tag",all_tag,1800)
         
 
-        return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title'])for kind in SETTING['Kind_List']],
+        return render(request,'welcome.html',{'KINDS':[(kind,SETTING['Kind'][kind]['page_title']) for kind in SETTING['Kind_List']],
                                               'recent_posts':recent_posts,
                                               'all_tag':all_tag,
                                               'TITLE': SETTING['Index']['page_TITLE'],
