@@ -409,6 +409,7 @@ def myadmin(request):
 
         return render(request,'admin.html',
             {
+            'TITLE': 'Admin',
             "username":username,"posts":posts})
         
 
