@@ -97,11 +97,12 @@ def sitemap(request):
             cache.set("all_posts",posts,1800)
             cache.set("all_tags",tags,1800)
 
-
+        newest_post = posts[0]
         
         return render(request,'sitemap.xml',
             {'posts':posts,
              'tags':tags,
+             'newest_post':newest_post
             })
      
 
