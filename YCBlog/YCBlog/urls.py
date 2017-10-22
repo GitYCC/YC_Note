@@ -14,6 +14,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 from .views import sitemap
 from .views import robots
@@ -33,6 +36,8 @@ from .views import flush_cache
 from .views import google_console
 from .views import render_kind
 # TO-DO: from .views import static_handle
+
+
 
 urlpatterns = [
     #url(r'^god/mode/', include(admin.site.urls)),
@@ -57,4 +62,4 @@ urlpatterns = [
     url(r'^(?P<kind>\w+)/(?P<page>\d+)?',render_kind),
     #url(r'^static/(?P<file>\d+)',static_handle)
 
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
